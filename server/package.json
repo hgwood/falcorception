@@ -1,20 +1,16 @@
 {
-  "name": "server",
+  "name": "falcorception-server",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "Hugo Wood <hx4.5@free.fr",
+  "license": "MIT",
   "dependencies": {
     "body-parser": "^1.15.0",
     "debug": "^2.2.0",
     "express": "^4.13.4",
-    "falcor-express": "^0.1.2",
-    "falcor-router": "^0.2.12",
+    "falcor-express": "~0.1.2",
+    "falcor-router": "~0.2.12",
     "lodash": "^4.3.0"
   }
 }
