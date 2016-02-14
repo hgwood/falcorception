@@ -10,4 +10,5 @@ jumbotron metric {
 
 jumbotron .jumbotron-title {
   text-align: center;
+  text-transform: uppercase;
 }
