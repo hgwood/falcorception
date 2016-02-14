@@ -3,4 +3,5 @@ angular.module("falcorception", [
   "falcorception.jumbotron",
   "falcorception.metric",
   "falcorception.apiList",
+  "falcorception.falcor"
 ])
