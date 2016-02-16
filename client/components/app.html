@@ -1,8 +1,8 @@
 <jumbotron title="Falcorception">
   <metrics>
-    <metric label="APIs" value="$ctrl.napis" action-label="Create" action=""></metric>
+    <metric label="APIs" value="$ctrl.napis" action-label="Create" action="$ctrl.createApi()"></metric>
     <metric label="requests" value="2109"></metric>
   </metrics>
 </jumbotron>
 
-<api-list apis=""></api-list>
+<api-list apis="$ctrl.apis"></api-list>

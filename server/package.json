@@ -12,6 +12,7 @@
     "falcor-express": "~0.1.2",
     "falcor-router": "~0.2.12",
     "lodash": "^4.3.0",
-    "serve-static": "^1.10.2"
+    "serve-static": "^1.10.2",
+    "shortid": "^2.2.4"
   }
 }

@@ -2,5 +2,8 @@
   <div class="panel-body">
     <div class="metric-value">{{$ctrl.value}}</div>
     <div class="metric-label">{{::$ctrl.label}}</div>
+    <div ng-if="$ctrl.actionLabel" class="action">
+      <button class="btn btn-primary" ng-click="$ctrl.action()">{{::$ctrl.actionLabel}}</button>
+    </div>
   </div>
 </div>
