@@ -5,10 +5,16 @@
   </head>
   <body>
     <div ng-app="falcorception">
-      <app></app>
+      <div ng-view></div>
     </div>
+    <script>
+      module = {}
+    </script>
+    <script src="node_modules/lodash/lodash.js"></script>
+    <script src="node_modules/co/index.js"></script>
     <script src="node_modules/falcor/dist/falcor.browser.js"></script>
     <script src="node_modules/angular/angular.js"></script>
+    <script src="node_modules/angular-route/angular-route.js"></script>
     <script src="index.js"></script>
     <script src="services/falcor.service.js"></script>
     <script src="services/falcorModel.service.js"></script>

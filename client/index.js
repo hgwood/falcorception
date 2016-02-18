@@ -1,4 +1,5 @@
 angular.module("falcorception", [
+  "ngRoute",
   "falcorception.app",
   "falcorception.jumbotron",
   "falcorception.metric",

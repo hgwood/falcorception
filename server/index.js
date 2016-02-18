@@ -27,9 +27,12 @@ app.use("/falcorception.json", falcorExpress.dataSourceRoute(function () {
       get(pathSet) {
         const data = rw()
         return _(pathSet.indices)
-          .map(_.propertyOf(data.apis))
-          .map(_.propertyOf(data.apisById))
-          .flatMap(api => _.map(pathSet.props, prop => ({path: ["apisById", api.id, prop], value: api[prop]})))
+          .zipObject(pathSet.indices)
+          .mapValues(_.propertyOf(data.apis))
+          .tap(console.log)
+          .mapValues(_.propertyOf(data.apisById))
+          .tap(console.log)
+          .flatMap((api, index) => _.map(pathSet.props, prop => ({path: ["apis", index, prop], value: api[prop]})))
           .value()
       }
     },
