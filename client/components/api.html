@@ -1,0 +1,8 @@
+<jumbotron title="{{::$ctrl.api.name}}">
+  <metrics>
+    <metric label="Routes" value="$ctrl.api.routes.length"></metric>
+    <metric label="Requests" value="$ctrl.api.nrequests"></metric>
+  </metrics>
+</jumbotron>
+
+<api-list apis="$ctrl.api.routes"></api-list>

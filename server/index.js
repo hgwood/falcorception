@@ -30,6 +30,7 @@ app.use("/falcorception.json", falcorExpress.dataSourceRoute(function () {
           .zipObject(pathSet.indices)
           .mapValues(_.propertyOf(data.apis))
           .mapValues(_.propertyOf(data.apisById))
+          .pick(_.identity)
           .flatMap((api, index) => _.map(pathSet.props, prop => ({path: ["apis", index, prop], value: api[prop]})))
           .value()
       }
@@ -45,13 +46,45 @@ app.use("/falcorception.json", falcorExpress.dataSourceRoute(function () {
       },
     },
     {
+      route: "apisById[{keys:ids}].routes[{integers:indices}][{keys:props}]",
+      get(pathSet) {
+        const data = rw()
+        return _(pathSet.ids)
+          .zipObject(pathSet.ids)
+          .mapValues(_.propertyOf(data.apisById))
+          .mapValues("routes")
+          .mapValues(routes => _.pick(routes, pathSet.indices))
+          .flatMap((routes, apiId) => {
+            return _.flatMap(routes, (route, index) => {
+              return _.map(pathSet.props, prop => {
+                return {path: ["apisById", apiId, "routes", index, prop], value: route[prop]}
+              })
+            })
+          })
+          .value()
+      }
+    },
+    {
+      route: "apisById[{keys:ids}].routes.length",
+      get(pathSet) {
+        const data = rw()
+        return _(pathSet.ids)
+          .zipObject(pathSet.ids)
+          .mapValues(_.propertyOf(data.apisById))
+          .mapValues("routes.length")
+          .map((length, apiId) => ({path: ["apisById", apiId, "routes", "length"], value: length}))
+          .tap(console.log)
+          .value()
+      }
+    },
+    {
       route: "apis.create",
       call(callPath, args) {
         const name = args[0]
         const id = shortid.generate()
         // fs.writeFileSync(path.join(__dirname, id + ".json"), JSON.stringify())
         const newLength = rw(function (model) {
-          model.apisById[id] = {id, name, routes: []}
+          model.apisById[id] = {id, name, routes: [{id: shortid.generate()}]}
           return model.apis.push(id)
         })
         return {

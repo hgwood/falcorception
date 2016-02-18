@@ -6,8 +6,7 @@ angular.module("falcorception.app", [])
       template: '<app napis="$resolve.napis" apis="$resolve.apis"></app>',
       resolve: {
         napis: falcorModel => falcorModel.get("meta.napis").then(_.property("json.meta.napis")),
-        apis: falcorModel => falcorModel.get("apis[0..5].name").then(_.property("json.apis"))
-        // apis: falcorModel => falcorModel.call("apis.create", ["someName"], [["name"], ["id"]], ["[0..5]['name']"]),
+        apis: falcorModel => falcorModel.get("apis[0..50]['id', 'name']").then(_.property("json.apis"))
       },
     })
     .otherwise("/falcorception")
@@ -19,7 +18,7 @@ angular.module("falcorception.app", [])
     napis: "=",
     apis: "=",
   },
-  controller($scope) {
+  controller(falcorModel, $scope) {
     const ctrl = this
     ctrl.createApi = co.wrap(function* () {
       const response = yield falcorModel.call("apis.create", ["someName"], [["name"], ["id"]], ["[0..5]['name']"])//.then(response => {

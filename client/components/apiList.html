@@ -1,5 +1,5 @@
 <table class="table">
   <tr ng-repeat="api in $ctrl.apis">
-    <td>{{::api.name}}</td>
+    <td><a ng-href="#/apis/{{::api.id}}">{{::api.id}} {{::api.name}}</a></td>
   </tr>
 </table>
