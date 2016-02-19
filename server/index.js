@@ -65,6 +65,25 @@ app.use("/falcorception.json", falcorExpress.dataSourceRoute(function () {
       }
     },
     {
+      route: "apisById[{keys:ids}].routes.create",
+      call(pathSet, args) {
+        const apiId = pathSet.ids[0] // let's ignore the rest for now
+        const routeName = args[0]
+        const routePath = args[1]
+        const routeId = shortid.generate()
+        const route = {id: routeId, name: routeName, path: routePath}
+        const newLength = rw(function (model) {
+          return model.apisById[apiId].routes.push(route)
+        })
+        return _(route)
+          .map((value, key) => {
+            return {path: ["apisById", apiId, "routes", newLength - 1, key], value}
+          })
+          .push({path: ["apisById", apiId, "routes", "lastAdded"], value: {$type: "ref", value: ["apisById", apiId, "routes", newLength - 1]}})
+          .value()
+      }
+    },
+    {
       route: "apisById[{keys:ids}].routes.length",
       get(pathSet) {
         const data = rw()
@@ -73,7 +92,6 @@ app.use("/falcorception.json", falcorExpress.dataSourceRoute(function () {
           .mapValues(_.propertyOf(data.apisById))
           .mapValues("routes.length")
           .map((length, apiId) => ({path: ["apisById", apiId, "routes", "length"], value: length}))
-          .tap(console.log)
           .value()
       }
     },
@@ -82,7 +100,6 @@ app.use("/falcorception.json", falcorExpress.dataSourceRoute(function () {
       call(callPath, args) {
         const name = args[0]
         const id = shortid.generate()
-        // fs.writeFileSync(path.join(__dirname, id + ".json"), JSON.stringify())
         const newLength = rw(function (model) {
           model.apisById[id] = {id, name, routes: [{id: shortid.generate()}]}
           return model.apis.push(id)

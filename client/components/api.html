@@ -1,6 +1,6 @@
 <jumbotron title="{{::$ctrl.api.name}}">
   <metrics>
-    <metric label="Routes" value="$ctrl.api.routes.length"></metric>
+    <metric label="Routes" value="$ctrl.api.routes.length" action-label="Create" action="$ctrl.createRoute()"></metric>
     <metric label="Requests" value="$ctrl.api.nrequests"></metric>
   </metrics>
 </jumbotron>
