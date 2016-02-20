@@ -21,8 +21,8 @@ angular.module("falcorception.app", [])
   controller(falcorModel, $scope) {
     const ctrl = this
     ctrl.createApi = co.wrap(function* () {
-      const response = yield falcorModel.call("apis.create", ["someName"], [["name"], ["id"]], ["[0..10]['name']"])//.then(response => {
-      ctrl.apis = Array.from(response.json.apis).slice(0, 5)
+      const response = yield falcorModel.call("apis.create", ["someName"], [["name"], ["id"]], ["[0..10]['id', 'name']"])//.then(response => {
+      ctrl.apis = Array.from(response.json.apis).slice(0, 10)
       ctrl.napis += 1
       $scope.$apply()
     })
