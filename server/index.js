@@ -74,11 +74,8 @@ app.use("/falcorception.json", falcorExpress.dataSourceRoute(function () {
           .zipObject(pathSet.ids)
           .mapValues(_.propertyOf(data.apisById))
           .mapValues("routes")
-          .tap(console.log)
           .mapValues(routes => _.orderBy(_.values(_.omit(routes, "length")), ["created"], ["desc"]))
-          .tap(console.log)
           .mapValues(routes => _.pick(routes, pathSet.indices))
-          .tap(console.log)
           .flatMap((routes, apiId) => {
             return _.map(routes, (route, index) => {
               return {path: ["apisById", apiId, "routes", "mostRecentFirst", index], value: {$type: "ref", value: ["apisById", apiId, "routes", "byIds", route.id]}}
