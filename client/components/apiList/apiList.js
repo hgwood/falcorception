@@ -1,6 +1,6 @@
 angular.module("falcorception.apiList", []).component("apiList", {
-  templateUrl: "components/apiList.html",
+  templateUrl: "components/apiList/apiList.html",
   bindings: {
-    apis: "=",
+    apis: "<",
   },
 })

@@ -1,0 +1,28 @@
+api-list .card{
+    width: 350px;
+    border: 1px solid gray;
+    box-shadow: 1px 1px 3px #888;
+    border-top: 10px solid #00AA00;
+    border-radius:  4px;
+    min-height: 250px;
+    padding: 10px;
+    margin: 10px;
+}
+
+api-list h1{
+    font-weight: lighter;
+    text-align: center;
+}
+
+api-list p {
+    margin: 10px;
+    line-height: 1.4em;
+    font-size: 1.2em;
+}
+
+api-list {
+    box-sizing: border-box;
+    justify-content: center;
+    display: flex;
+    flex-wrap: wrap;
+}
