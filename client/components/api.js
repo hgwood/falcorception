@@ -8,7 +8,7 @@ angular.module("falcorception.api", [])
         api: (falcorModel, $route) => 
           falcorModel.get(
             ["apisById", $route.current.params.id, ["id", "name"]],
-            ["apisById", $route.current.params.id, "routes", [{from: 0, length: 10}, "length"], ["id", "name", "pattern"]]
+            ["apisById", $route.current.params.id, "routes", ["mostRecentFirst", "length"], {from: 0, length: 10}, ["id", "name", "pattern", "created"]]
           ).then(_.property(["json", "apisById", $route.current.params.id]))
       }
     })
@@ -24,13 +24,12 @@ angular.module("falcorception.api", [])
     ctrl.createRoute = co.wrap(function* () {
       const response = yield falcorModel.call(
         ["apisById", ctrl.api.id, "routes", "create"], 
-        ["someRouteName"], 
-        ["id", "name"], 
-        [["length"]])
+        ["someRouteName", "thePathOfTheRoute"], 
+        ["id", "name", "created"], 
+        [["length"], ["mostRecentFirst", {from: 0, length: 10}, ["id", "name", "created"]]])
       const routes = response.json.apisById[ctrl.api.id].routes
-      const route = routes.lastAdded
-      ctrl.api.routes[route.id] = route
-      ctrl.api.routes.length = routes.length
+      routes.mostRecentFirst = _.map(routes.mostRecentFirst, _.toPlainObject)
+      ctrl.api.routes = routes
       $scope.$apply()
     })
   }

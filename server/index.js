@@ -45,40 +45,45 @@ app.use("/falcorception.json", falcorExpress.dataSourceRoute(function () {
       },
     },
     {
-      route: "apisById[{keys:ids}].routes[{integers:indices}][{keys:props}]",
-      get(pathSet) {
-        const data = rw()
-        return _(pathSet.ids)
-          .zipObject(pathSet.ids)
-          .mapValues(_.propertyOf(data.apisById))
-          .mapValues("routes")
-          .mapValues(routes => _.pick(routes, pathSet.indices))
-          .flatMap((routes, apiId) => {
-            return _.flatMap(routes, (route, index) => {
-              return _.map(pathSet.props, prop => {
-                return {path: ["apisById", apiId, "routes", index, prop], value: route[prop]}
-              })
-            })
-          })
-          .value()
-      }
-    },
-    {
       route: "apisById[{keys:ids}].routes.create",
       call(pathSet, args) {
         const apiId = pathSet.ids[0] // let's ignore the rest for now
         const routeName = args[0]
         const routePath = args[1]
         const routeId = shortid.generate()
-        const route = {id: routeId, name: routeName, path: routePath}
+        const route = {id: routeId, name: routeName, path: routePath, created: new Date().toISOString()}
         const newLength = rw(function (model) {
-          return model.apisById[apiId].routes.push(route)
+          model.apisById[apiId].routes[route.id] = route
+          return model.apisById[apiId].routes.length += 1
         })
         return _(route)
           .map((value, key) => {
-            return {path: ["apisById", apiId, "routes", newLength - 1, key], value}
+            return {path: ["apisById", apiId, "routes", "byIds", route.id, key], value}
           })
-          .push({path: ["apisById", apiId, "routes", "lastAdded"], value: {$type: "ref", value: ["apisById", apiId, "routes", newLength - 1]}})
+          .push({path: ["apisById", apiId, "routes", "length"], value: newLength})
+          .push({path: ["apisById", apiId, "routes", "mostRecentFirst", 0], value: {$type: "ref", value: ["apisById", apiId, "routes", "byIds", route.id]}})
+          .push({path: ["apisById", apiId, "routes", "lastAdded"], value: {$type: "ref", value: ["apisById", apiId, "routes", "byIds", route.id]}})
+          .value()
+      }
+    },
+    {
+      route: "apisById[{keys:ids}].routes.mostRecentFirst[{integers:indices}]",
+      get(pathSet) {
+        const data = rw()
+        return _(pathSet.ids)
+          .zipObject(pathSet.ids)
+          .mapValues(_.propertyOf(data.apisById))
+          .mapValues("routes")
+          .tap(console.log)
+          .mapValues(routes => _.orderBy(_.values(_.omit(routes, "length")), ["created"], ["desc"]))
+          .tap(console.log)
+          .mapValues(routes => _.pick(routes, pathSet.indices))
+          .tap(console.log)
+          .flatMap((routes, apiId) => {
+            return _.map(routes, (route, index) => {
+              return {path: ["apisById", apiId, "routes", "mostRecentFirst", index], value: {$type: "ref", value: ["apisById", apiId, "routes", "byIds", route.id]}}
+            })
+          })
           .value()
       }
     },
@@ -95,12 +100,31 @@ app.use("/falcorception.json", falcorExpress.dataSourceRoute(function () {
       }
     },
     {
+      route: "apisById[{keys:apiIds}].routes.byIds[{keys:routeIds}][{keys:props}]",
+      get(pathSet) {
+        const data = rw()
+        return _(pathSet.apiIds)
+          .zipObject(pathSet.apiIds)
+          .mapValues(_.propertyOf(data.apisById))
+          .mapValues("routes")
+          .mapValues(routes => _.pick(routes, pathSet.routeIds))
+          .flatMap((routes, apiId) => {
+            return _.flatMap(routes, (route, routeId) => {
+              return _.map(pathSet.props, prop => {
+                return {path: ["apisById", apiId, "routes", "byIds", routeId, prop], value: route[prop]}
+              })
+            })
+          })
+          .value()
+      }
+    },
+    {
       route: "apis.create",
       call(callPath, args) {
         const name = args[0]
         const id = shortid.generate()
         const newLength = rw(function (model) {
-          model.apisById[id] = {id, name, routes: [{id: shortid.generate()}]}
+          model.apisById[id] = {id, name, routes: {[id]: {id: shortid.generate()}, length: 1}}
           return model.apis.push(id)
         })
         return {
