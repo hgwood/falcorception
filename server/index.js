@@ -23,15 +23,14 @@ app.use("/falcorception.json", falcorExpress.dataSourceRoute(function () {
       get: () => ({path: ["meta", "napis"], value: 2001})
     },
     {
-      route: "apis[{integers:indices}][{keys:props}]",
+      route: "apis[{integers:indices}]",
       get(pathSet) {
         const data = rw()
         return _(pathSet.indices)
           .zipObject(pathSet.indices)
           .mapValues(_.propertyOf(data.apis))
-          .mapValues(_.propertyOf(data.apisById))
-          .pick(_.identity)
-          .flatMap((api, index) => _.map(pathSet.props, prop => ({path: ["apis", index, prop], value: api[prop]})))
+          .pickBy(_.identity)
+          .map((apiId, index) => ({path: ["apis", index], value: {$type: "ref", value: ["apisById", apiId]}}))
           .value()
       }
     },
