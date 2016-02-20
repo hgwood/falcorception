@@ -26,11 +26,16 @@ app.use("/falcorception.json", falcorExpress.dataSourceRoute(function () {
       route: "apis[{integers:indices}]",
       get(pathSet) {
         const data = rw()
+        const apis = _(data.apisById)
+          .omit("length")
+          .values()
+          .orderBy("created", "desc")
+          .value()
         return _(pathSet.indices)
           .zipObject(pathSet.indices)
-          .mapValues(_.propertyOf(data.apis))
+          .mapValues(_.propertyOf(apis))
           .pickBy(_.identity)
-          .map((apiId, index) => ({path: ["apis", index], value: {$type: "ref", value: ["apisById", apiId]}}))
+          .map((api, index) => ({path: ["apis", index], value: {$type: "ref", value: ["apisById", api.id]}}))
           .value()
       }
     },
@@ -120,8 +125,9 @@ app.use("/falcorception.json", falcorExpress.dataSourceRoute(function () {
       call(callPath, args) {
         const name = args[0]
         const id = shortid.generate()
+        const created = new Date().toISOString()
         const newLength = rw(function (model) {
-          model.apisById[id] = {id, name, routes: {[id]: {id: shortid.generate()}, length: 1}}
+          model.apisById[id] = {id, name, created, routes: {[id]: {id: shortid.generate()}, length: 1}}
           return model.apis.push(id)
         })
         return {
