@@ -25,7 +25,7 @@ angular.module("falcorception.api", [])
       const response = yield falcorModel.call(
         ["apisById", ctrl.api.id, "routes", "create"], 
         ["someRouteName"], 
-        ["id"], 
+        ["id", "name"], 
         [["length"]])
       const routes = response.json.apisById[ctrl.api.id].routes
       const route = routes.lastAdded
