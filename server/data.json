@@ -11,7 +11,9 @@
       "id": "N1dJINkie",
       "name": "someName",
       "created": "2016-01-01T00:00:00Z",
-      "routes": {}
+      "routes": {
+        "length": 0
+      }
     },
     "Nkrh8yMog": {
       "id": "Nkrh8yMog",
@@ -40,24 +42,24 @@
       "name": "someName",
       "created": "2016-02-20T23:49:55.768Z",
       "routes": {
-        "4yMLC-mog": {
-          "id": "4yMLC-mog",
+        "length": 3,
+        "E1z0gfXje": {
+          "id": "E1z0gfXje",
           "name": "someRouteName",
           "path": "thePathOfTheRoute",
-          "created": "2016-02-21T20:33:53.099Z"
+          "created": "2016-02-21T20:44:33.996Z"
         },
-        "length": 2,
-        "4k4UR-Qog": {
-          "id": "4k4UR-Qog",
+        "EJVRezQil": {
+          "id": "EJVRezQil",
           "name": "someRouteName",
           "path": "thePathOfTheRoute",
-          "created": "2016-02-21T20:33:55.629Z"
+          "created": "2016-02-21T20:44:35.213Z"
         },
-        "VJHL0b7sl": {
-          "id": "VJHL0b7sl",
+        "E1BCef7ol": {
+          "id": "E1BCef7ol",
           "name": "someRouteName",
           "path": "thePathOfTheRoute",
-          "created": "2016-02-21T20:33:56.925Z"
+          "created": "2016-02-21T20:44:36.245Z"
         }
       }
     },
