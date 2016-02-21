@@ -1,9 +1,9 @@
-dashboard div {
+.dashboard, .dashboard * {
   display: flex;
   flex-direction: row;
 }
 
-dashboard metric {
+.dashboard metric {
   width: 100%;
   margin: 0 1%;
 }
