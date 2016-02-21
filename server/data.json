@@ -11,99 +11,7 @@
       "id": "N1dJINkie",
       "name": "someName",
       "created": "2016-01-01T00:00:00Z",
-      "routes": {
-        "NyeOk84yix": {
-          "id": "NyeOk84yix",
-          "name": "My First Route",
-          "path": "lol",
-          "created": "2016-01-01T00:00:00Z"
-        },
-        "length": 15,
-        "4kwv-kfsx": {
-          "id": "4kwv-kfsx",
-          "name": "someRouteName",
-          "path": "thePathOfTheRoute",
-          "created": "2016-02-20T23:09:58.437Z"
-        },
-        "N1m_QkGje": {
-          "id": "N1m_QkGje",
-          "name": "someRouteName",
-          "path": "thePathOfTheRoute",
-          "created": "2016-02-20T23:18:43.081Z"
-        },
-        "Vk0jmJGie": {
-          "id": "Vk0jmJGie",
-          "name": "someRouteName",
-          "path": "thePathOfTheRoute",
-          "created": "2016-02-20T23:19:41.944Z"
-        },
-        "N1QXEkzjx": {
-          "id": "N1QXEkzjx",
-          "name": "someRouteName",
-          "path": "thePathOfTheRoute",
-          "created": "2016-02-20T23:21:38.951Z"
-        },
-        "4yNOVkMsl": {
-          "id": "4yNOVkMsl",
-          "name": "someRouteName",
-          "path": "thePathOfTheRoute",
-          "created": "2016-02-20T23:22:59.443Z"
-        },
-        "NknwryMje": {
-          "id": "NknwryMje",
-          "name": "someRouteName",
-          "path": "thePathOfTheRoute",
-          "created": "2016-02-20T23:27:07.749Z"
-        },
-        "VJbOSyfse": {
-          "id": "VJbOSyfse",
-          "name": "someRouteName",
-          "path": "thePathOfTheRoute",
-          "created": "2016-02-20T23:27:12.624Z"
-        },
-        "EJfdrkzox": {
-          "id": "EJfdrkzox",
-          "name": "someRouteName",
-          "path": "thePathOfTheRoute",
-          "created": "2016-02-20T23:27:13.583Z"
-        },
-        "4JPuSJzol": {
-          "id": "4JPuSJzol",
-          "name": "someRouteName",
-          "path": "thePathOfTheRoute",
-          "created": "2016-02-20T23:27:18.808Z"
-        },
-        "VkKgIJfjl": {
-          "id": "VkKgIJfjl",
-          "name": "someRouteName",
-          "path": "thePathOfTheRoute",
-          "created": "2016-02-20T23:29:28.227Z"
-        },
-        "N1zZIJMix": {
-          "id": "N1zZIJMix",
-          "name": "someRouteName",
-          "path": "thePathOfTheRoute",
-          "created": "2016-02-20T23:29:38.062Z"
-        },
-        "4JEbIyzsx": {
-          "id": "4JEbIyzsx",
-          "name": "someRouteName",
-          "path": "thePathOfTheRoute",
-          "created": "2016-02-20T23:29:39.114Z"
-        },
-        "NkSZ8yfjl": {
-          "id": "NkSZ8yfjl",
-          "name": "someRouteName",
-          "path": "thePathOfTheRoute",
-          "created": "2016-02-20T23:29:40.778Z"
-        },
-        "4y8WIyGjl": {
-          "id": "4y8WIyGjl",
-          "name": "someRouteName",
-          "path": "thePathOfTheRoute",
-          "created": "2016-02-20T23:29:41.541Z"
-        }
-      }
+      "routes": {}
     },
     "Nkrh8yMog": {
       "id": "Nkrh8yMog",
@@ -132,15 +40,24 @@
       "name": "someName",
       "created": "2016-02-20T23:49:55.768Z",
       "routes": {
-        "Nkl4TckGsx": {
-          "id": "Nkl4TckGsx"
-        },
-        "length": 2,
-        "4kw95Wmox": {
-          "id": "4kw95Wmox",
+        "4yMLC-mog": {
+          "id": "4yMLC-mog",
           "name": "someRouteName",
           "path": "thePathOfTheRoute",
-          "created": "2016-02-21T20:17:58.101Z"
+          "created": "2016-02-21T20:33:53.099Z"
+        },
+        "length": 2,
+        "4k4UR-Qog": {
+          "id": "4k4UR-Qog",
+          "name": "someRouteName",
+          "path": "thePathOfTheRoute",
+          "created": "2016-02-21T20:33:55.629Z"
+        },
+        "VJHL0b7sl": {
+          "id": "VJHL0b7sl",
+          "name": "someRouteName",
+          "path": "thePathOfTheRoute",
+          "created": "2016-02-21T20:33:56.925Z"
         }
       }
     },

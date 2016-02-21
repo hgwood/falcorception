@@ -66,7 +66,6 @@ app.use("/falcorception.json", falcorExpress.dataSourceRoute(function () {
             return {path: ["apisById", apiId, "routes", "byIds", route.id, key], value}
           })
           .push({path: ["apisById", apiId, "routes", "length"], value: newLength})
-          .push({path: ["apisById", apiId, "routes", "mostRecentFirst", 0], value: {$type: "ref", value: ["apisById", apiId, "routes", "byIds", route.id]}})
           .push({path: ["apisById", apiId, "routes", "lastAdded"], value: {$type: "ref", value: ["apisById", apiId, "routes", "byIds", route.id]}})
           .value()
       }
