@@ -50,6 +50,12 @@ app.use("/falcorception.json", falcorExpress.dataSourceRoute(function () {
       },
     },
     {
+      route: "['apis', 'apisById'].length",
+      get(pathSet) {
+        return [{path: pathSet, value: rw().apisById.length}]
+      }
+    },
+    {
       route: "apisById[{keys:ids}].routes.create",
       call(pathSet, args) {
         const apiId = pathSet.ids[0] // let's ignore the rest for now

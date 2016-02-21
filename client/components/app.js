@@ -5,8 +5,11 @@ angular.module("falcorception.app", [])
     .when("/falcorception", {
       template: '<app napis="$resolve.napis" apis="$resolve.apis"></app>',
       resolve: {
-        napis: falcorModel => falcorModel.get("meta.napis").then(_.property("json.meta.napis")),
-        apis: falcorModel => falcorModel.get("apis[0..10]['id', 'name']").then(_.property("json.apis"))
+        apis: falcorModel => falcorModel.get(
+          ["apis", "length"],
+          ["apis", {from: 0, length: 10}, ["id", "name"]],
+          ["apis", {from: 0, length: 10}, "routes", "length"])
+          .then(_.property("json.apis"))
       },
     })
     .otherwise("/falcorception")
@@ -21,9 +24,12 @@ angular.module("falcorception.app", [])
   controller(falcorModel, $scope) {
     const ctrl = this
     ctrl.createApi = co.wrap(function* () {
-      const response = yield falcorModel.call("apis.create", ["someName"], [["name"], ["id"]], ["[0..10]['id', 'name']"])//.then(response => {
-      ctrl.apis = Array.from(response.json.apis).slice(0, 10)
-      ctrl.napis += 1
+      const response = yield falcorModel.call(
+        "apis.create", 
+        ["someName"], 
+        [["id"], ["name"]], 
+        [[{from: 0, length: 10}, ["id", "name"]], ["length"]])
+      ctrl.apis = response.json.apis
       $scope.$apply()
     })
   },
