@@ -110,7 +110,7 @@
       "name": "someName",
       "created": "2016-02-01T00:00:00Z",
       "routes": {
-        "Nkrh8yMog": {
+        "VJer38yMig": {
           "id": "VJer38yMig"
         },
         "length": 1
@@ -121,7 +121,7 @@
       "name": "someName",
       "created": "2016-01-02T00:00:00Z",
       "routes": {
-        "VyD38JGje": {
+        "4kgwhU1zjg": {
           "id": "4kgwhU1zjg"
         },
         "length": 1
@@ -132,10 +132,16 @@
       "name": "someName",
       "created": "2016-02-20T23:49:55.768Z",
       "routes": {
-        "N1V69kMie": {
+        "Nkl4TckGsx": {
           "id": "Nkl4TckGsx"
         },
-        "length": 1
+        "length": 2,
+        "4kw95Wmox": {
+          "id": "4kw95Wmox",
+          "name": "someRouteName",
+          "path": "thePathOfTheRoute",
+          "created": "2016-02-21T20:17:58.101Z"
+        }
       }
     },
     "Ek_Tqyfog": {
@@ -143,7 +149,7 @@
       "name": "someName",
       "created": "2016-02-20T23:49:59.154Z",
       "routes": {
-        "Ek_Tqyfog": {
+        "E1euTcJMie": {
           "id": "E1euTcJMie"
         },
         "length": 1
