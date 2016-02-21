@@ -29,7 +29,6 @@ angular.module("falcorception.api", [])
         ["id", "name", "created"], 
         [["length"], ["mostRecentFirst", {from: 0, length: 10}, ["id", "name", "created"]]])
       const routes = response.json.apisById[ctrl.api.id].routes
-      routes.mostRecentFirst = _.map(routes.mostRecentFirst, _.toPlainObject)
       ctrl.api.routes = routes
       $scope.$apply()
     })
