@@ -1,0 +1,17 @@
+metric .panel-body {
+  width: 100%;
+  justify-content: space-around;
+}
+
+metric .metric-gauge {
+  flex-direction: column;
+}
+
+metric .metric-value {
+  margin: 0;
+}
+
+metric .action {
+  flex-direction: column;
+  justify-content: center;
+}

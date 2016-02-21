@@ -1,13 +1,3 @@
-jumbotron metrics {
-  display: flex;
-  flex-direction: row;
-}
-
-jumbotron metric {
-  width: 100%;
-  margin: 0 1%;
-}
-
 jumbotron .jumbotron-title {
   text-align: center;
   text-transform: uppercase;
