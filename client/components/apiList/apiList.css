@@ -1,3 +1,23 @@
+api-list {
+    box-sizing: border-box;
+    justify-content: center;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+api-list a {
+  margin: 1%;
+  width: 350px;
+}
+
+api-list a:hover {
+  text-decoration: none;
+}
+
+api-list a .well:hover {
+  border: 1px solid #00AA00;
+}
+
 api-list .card{
     width: 350px;
     border: 1px solid gray;
@@ -7,22 +27,4 @@ api-list .card{
     min-height: 250px;
     padding: 10px;
     margin: 10px;
-}
-
-api-list h1{
-    font-weight: lighter;
-    text-align: center;
-}
-
-api-list p {
-    margin: 10px;
-    line-height: 1.4em;
-    font-size: 1.2em;
-}
-
-api-list {
-    box-sizing: border-box;
-    justify-content: center;
-    display: flex;
-    flex-wrap: wrap;
 }

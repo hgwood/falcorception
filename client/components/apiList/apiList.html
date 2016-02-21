@@ -1,4 +1,5 @@
-<div class="card" ng-repeat="api in $ctrl.apis">
-  <h1><a ng-href="#/apis/{{::api.id}}">{{::api.id}} {{::api.name}}</a></h1>
-  <p>Lorem ipsum et tout le tralala</p>
-</div>
+<a ng-href="#/apis/{{::api.id}}" ng-repeat="api in $ctrl.apis">
+  <div class="well">
+    <h2>{{::api.name}} <small>{{::api.id}}</small></h2>
+  </div>
+</a>
