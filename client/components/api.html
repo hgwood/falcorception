@@ -1,8 +1,8 @@
 <jumbotron title="{{::$ctrl.api.name}}">
-  <metrics>
-    <metric label="Routes" value="$ctrl.api.routes.length" action-label="Create" action="$ctrl.createRoute()"></metric>
-    <metric label="Requests" value="$ctrl.api.nrequests"></metric>
-  </metrics>
 </jumbotron>
+<div class="dashboard">
+  <metric label="Routes" value="$ctrl.api.routes.length" action-label="Create one!" action="$ctrl.createRoute()"></metric>
+  <metric label="Requests" value="501"></metric>
+</div>
 
 <api-list apis="$ctrl.api.routes.mostRecentFirst"></api-list>
