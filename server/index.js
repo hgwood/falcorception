@@ -126,7 +126,7 @@ app.use("/falcorception.json", falcorExpress.dataSourceRoute(function () {
         const id = shortid.generate()
         const created = new Date().toISOString()
         const newLength = rw(function (model) {
-          model.apisById[id] = {id, name, created, routes: {[id]: {id: shortid.generate()}, length: 1}}
+          model.apisById[id] = {id, name, created, routes: {length: 0}}
           return model.apis.push(id)
         })
         return {
