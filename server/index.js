@@ -147,7 +147,7 @@ app.use("/falcorception.json", falcorExpress.dataSourceRoute(function () {
       }
     },
     {
-      route: "apisById[{keys:apiIds}].routes.byIds[{keys:routeIds}].source[{keys:sourceProps}]",
+      route: "apisById[{keys:apiIds}].routes.byIds[{keys:routeIds}].source",
       get(pathSet) {
         const data = rw()
         return _(pathSet.apiIds)
@@ -157,10 +157,23 @@ app.use("/falcorception.json", falcorExpress.dataSourceRoute(function () {
           .mapValues(routes => _.pick(routes, pathSet.routeIds))
           .flatMap((routes, apiId) => {
             return _.flatMap(routes, (route, routeId) => {
-              return _.map(pathSet.sourceProps, prop => {
-                return {path: ["apisById", apiId, "routes", "byIds", routeId, "source", prop], value: data.sources[route.source.id][prop]}
-              })
+              return {
+                path: ["apisById", apiId, "routes", "byIds", routeId, "source"], 
+                value: {$type: "ref", value: ["sources", route.source.id]}
+              }
             })
+          })
+          .value()
+      }
+    },
+    {
+      route: "sources[{keys:ids}][{keys:props}]",
+      get(pathSet) {
+        const data = rw()
+        return _(data.sources)
+          .pick(pathSet.ids)
+          .flatMap(source => {
+            return _.map(pathSet.props, prop => ({path: ["sources", source.id, prop], value: source[prop]}))
           })
           .value()
       }

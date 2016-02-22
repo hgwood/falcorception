@@ -5,7 +5,7 @@ angular.module("falcorception.source", [])
     .when("/sources/:id", {
       template: '<source source="$resolve.source"></source>',
       resolve: {
-        route: (falcorModel, $route) => 
+        source: (falcorModel, $route) => 
           falcorModel.get(
             ["sources", $route.current.params.id, ["id", "name", "kind"]]
           ).then(_.property(["json", "sources", $route.current.params.id]))
