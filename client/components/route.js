@@ -20,8 +20,10 @@ angular.module("falcorception.route", [])
   bindings: {
     route: "<"
   },
-  controller(falcorModel, $scope) {
+  controller($location) {
     const ctrl = this
-    
+    ctrl.goToSource = function () {
+      $location.path(`/sources/${ctrl.route.source.id}`)
+    }
   }
 })

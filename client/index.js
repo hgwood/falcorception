@@ -7,6 +7,7 @@ angular.module("falcorception", [
   "falcorception.api",
   "falcorception.routeList",
   "falcorception.route",
+  "falcorception.source",
   "falcorception.vendor.falcor",
   "falcorception.falcorModel"
 ])

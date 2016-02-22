@@ -1,5 +1,5 @@
 <jumbotron title="{{::$ctrl.route.name}}"></jumbotron>
 <div class="dashboard">
-  <metric label="{{$ctrl.route.source.kind}} Source" value="$ctrl.route.source.name"></metric>
+  <metric label="{{$ctrl.route.source.kind}} Source" value="$ctrl.route.source.name" action-label="Show me!" action="$ctrl.goToSource()"></metric>
   <metric label="Requests" value="501"></metric>
 </div>
