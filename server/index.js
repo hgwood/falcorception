@@ -77,6 +77,27 @@ app.use("/falcorception.json", falcorExpress.dataSourceRoute(function () {
       }
     },
     {
+      route: "apis.create",
+      call(callPath, args) {
+        const name = args[0]
+        const id = shortid.generate()
+        const created = new Date().toISOString()
+        const newLength = rw(function (model) {
+          model.apisById[id] = {id, name, created, routes: {length: 0}}
+          return model.apis.push(id)
+        })
+        return {
+          paths: [["apis", [newLength - 1, "length"]]],
+          jsonGraph: {
+            apis: {
+              [newLength - 1]: {$type: "ref", value: ["apisById", id]},
+              length: newLength
+            },
+          },
+        }
+      },
+    },
+    {
       route: "apisById[{keys:ids}].routes.mostRecentFirst[{integers:indices}]",
       get(pathSet) {
         const data = rw()
@@ -126,26 +147,24 @@ app.use("/falcorception.json", falcorExpress.dataSourceRoute(function () {
       }
     },
     {
-      route: "apis.create",
-      call(callPath, args) {
-        const name = args[0]
-        const id = shortid.generate()
-        const created = new Date().toISOString()
-        const newLength = rw(function (model) {
-          model.apisById[id] = {id, name, created, routes: {length: 0}}
-          return model.apis.push(id)
-        })
-        return {
-          paths: [["apis", [newLength - 1, "length"]]],
-          jsonGraph: {
-            apis: {
-              [newLength - 1]: {$type: "ref", value: ["apisById", id]},
-              length: newLength
-            },
-          },
-        }
-      },
-    },
+      route: "apisById[{keys:apiIds}].routes.byIds[{keys:routeIds}].source[{keys:sourceProps}]",
+      get(pathSet) {
+        const data = rw()
+        return _(pathSet.apiIds)
+          .zipObject(pathSet.apiIds)
+          .mapValues(_.propertyOf(data.apisById))
+          .mapValues("routes")
+          .mapValues(routes => _.pick(routes, pathSet.routeIds))
+          .flatMap((routes, apiId) => {
+            return _.flatMap(routes, (route, routeId) => {
+              return _.map(pathSet.sourceProps, prop => {
+                return {path: ["apisById", apiId, "routes", "byIds", routeId, "source", prop], value: data.sources[route.source.id][prop]}
+              })
+            })
+          })
+          .value()
+      }
+    }
   ])
 }))
 

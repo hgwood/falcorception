@@ -22,7 +22,13 @@
       "created": "2016-02-01T00:00:00Z",
       "routes": {
         "VJer38yMig": {
-          "id": "VJer38yMig"
+          "id": "VJer38yMig",
+          "name": "someRouteName",
+          "matcher": "thePathOfTheRoute",
+          "created": "2016-02-21T20:44:36.245Z",
+          "source": {
+            "id": "SourceA"
+          }
         },
         "length": 1
       }
@@ -33,7 +39,13 @@
       "created": "2016-01-02T00:00:00Z",
       "routes": {
         "4kgwhU1zjg": {
-          "id": "4kgwhU1zjg"
+          "id": "4kgwhU1zjg",
+          "name": "someRouteName",
+          "matcher": "thePathOfTheRoute",
+          "created": "2016-02-21T20:44:36.245Z",
+          "source": {
+            "id": "SourceA"
+          }
         },
         "length": 1
       }
@@ -48,19 +60,28 @@
           "id": "E1z0gfXje",
           "name": "someRouteName",
           "matcher": "thePathOfTheRoute",
-          "created": "2016-02-21T20:44:33.996Z"
+          "created": "2016-02-21T20:44:33.996Z",
+          "source": {
+            "id": "SourceA"
+          }
         },
         "EJVRezQil": {
           "id": "EJVRezQil",
           "name": "someRouteName",
           "matcher": "thePathOfTheRoute",
-          "created": "2016-02-21T20:44:35.213Z"
+          "created": "2016-02-21T20:44:35.213Z",
+          "source": {
+            "id": "SourceA"
+          }
         },
         "E1BCef7ol": {
           "id": "E1BCef7ol",
           "name": "someRouteName",
           "matcher": "thePathOfTheRoute",
-          "created": "2016-02-21T20:44:36.245Z"
+          "created": "2016-02-21T20:44:36.245Z",
+          "source": {
+            "id": "SourceA"
+          }
         }
       }
     },
@@ -70,10 +91,23 @@
       "created": "2016-02-20T23:49:59.154Z",
       "routes": {
         "E1euTcJMie": {
-          "id": "E1euTcJMie"
+          "id": "E1euTcJMie",
+          "name": "someRouteName",
+          "matcher": "thePathOfTheRoute",
+          "created": "2016-02-21T20:44:36.245Z",
+          "source": {
+            "id": "SourceA"
+          }
         },
         "length": 1
       }
+    }
+  },
+  "sources": {
+    "SourceA": {
+      "id": "SourceA",
+      "name": "SourceA Name",
+      "kind": "MongoDB"
     }
   }
 }

@@ -8,7 +8,8 @@ angular.module("falcorception.route", [])
         route: (falcorModel, $route) => 
           falcorModel.get(
             ["apisById", $route.current.params.apiId, ["id", "name"]],
-            ["apisById", $route.current.params.apiId, "routes", "byIds", $route.current.params.id, ["id", "name", "matcher", "created"]]
+            ["apisById", $route.current.params.apiId, "routes", "byIds", $route.current.params.id, ["id", "name", "matcher", "created"]],
+            ["apisById", $route.current.params.apiId, "routes", "byIds", $route.current.params.id, "source", ["id", "name", "kind"]]
           ).then(_.property(["json", "apisById", $route.current.params.apiId, "routes", "byIds", $route.current.params.id]))
       }
     })
