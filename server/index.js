@@ -60,9 +60,9 @@ app.use("/falcorception.json", falcorExpress.dataSourceRoute(function () {
       call(pathSet, args) {
         const apiId = pathSet.ids[0] // let's ignore the rest for now
         const routeName = args[0]
-        const routePath = args[1]
+        const routeMatcher = args[1]
         const routeId = shortid.generate()
-        const route = {id: routeId, name: routeName, path: routePath, created: new Date().toISOString()}
+        const route = {id: routeId, name: routeName, matcher: routeMatcher, created: new Date().toISOString()}
         const newLength = rw(function (model) {
           model.apisById[apiId].routes[route.id] = route
           return model.apisById[apiId].routes.length += 1

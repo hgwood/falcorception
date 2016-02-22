@@ -47,19 +47,19 @@
         "E1z0gfXje": {
           "id": "E1z0gfXje",
           "name": "someRouteName",
-          "path": "thePathOfTheRoute",
+          "matcher": "thePathOfTheRoute",
           "created": "2016-02-21T20:44:33.996Z"
         },
         "EJVRezQil": {
           "id": "EJVRezQil",
           "name": "someRouteName",
-          "path": "thePathOfTheRoute",
+          "matcher": "thePathOfTheRoute",
           "created": "2016-02-21T20:44:35.213Z"
         },
         "E1BCef7ol": {
           "id": "E1BCef7ol",
           "name": "someRouteName",
-          "path": "thePathOfTheRoute",
+          "matcher": "thePathOfTheRoute",
           "created": "2016-02-21T20:44:36.245Z"
         }
       }

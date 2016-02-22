@@ -9,7 +9,7 @@ angular.module("falcorception.api", [])
           falcorModel.get(
             ["apisById", $route.current.params.id, ["id", "name"]],
             ["apisById", $route.current.params.id, "routes", "length"],
-            ["apisById", $route.current.params.id, "routes", "mostRecentFirst", {from: 0, length: 10}, ["id", "name", "pattern", "created"]]
+            ["apisById", $route.current.params.id, "routes", "mostRecentFirst", {from: 0, length: 10}, ["id", "name", "matcher", "created"]]
           ).then(_.property(["json", "apisById", $route.current.params.id]))
       }
     })
@@ -26,8 +26,8 @@ angular.module("falcorception.api", [])
       const response = yield falcorModel.call(
         ["apisById", ctrl.api.id, "routes", "create"], 
         ["someRouteName", "thePathOfTheRoute"], 
-        ["id", "name", "created"], 
-        [["length"], ["mostRecentFirst", {from: 0, length: 10}, ["id", "name", "created"]]])
+        ["id", "name", "matcher", "created"], 
+        [["length"], ["mostRecentFirst", {from: 0, length: 10}, ["id", "name", "matcher", "created"]]])
       const routes = response.json.apisById[ctrl.api.id].routes
       routes.mostRecentFirst.length = routes.length
       ctrl.api.routes = routes

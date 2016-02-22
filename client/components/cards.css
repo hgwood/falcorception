@@ -1,0 +1,19 @@
+.cards {
+    box-sizing: border-box;
+    justify-content: center;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.cards a {
+  margin: 1%;
+  width: 350px;
+}
+
+.cards a:hover {
+  text-decoration: none;
+}
+
+.cards a .well:hover {
+  border: 1px solid #00AA00;
+}
