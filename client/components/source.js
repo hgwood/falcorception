@@ -1,4 +1,4 @@
-angular.module("falcorception.source", [])
+module.exports = angular.module("falcorception.source", [])
 
 .config(function ($routeProvider) {
   $routeProvider

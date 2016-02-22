@@ -3,12 +3,16 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "start": "browser-sync start --proxy localhost:9009 --files \"*.js, *.css, *.html, components/*.*\""
+    "start": "npm-run-all --parallel watch server",
+    "watch": "mkdir -p build && watchify index.js -o build/bundle.js -d",
+    "server": "browser-sync start --proxy localhost:9009 --files \"build/bundle.js, *.css, *.html \""
   },
   "author": "Hugo Wood <hx4.5@free.fr>",
   "license": "MIT",
   "devDependencies": {
-    "browser-sync": "^2.11.1"
+    "browser-sync": "^2.11.1",
+    "npm-run-all": "^1.5.1",
+    "watchify": "^3.7.0"
   },
   "dependencies": {
     "angular": "^1.5.0",
@@ -17,6 +21,7 @@
     "bootswatch": "^3.3.6",
     "co": "^4.6.0",
     "falcor": "~0.1.16",
+    "falcor-http-datasource": "^0.1.3",
     "lodash": "^4.5.0"
   }
 }

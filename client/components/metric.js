@@ -1,4 +1,4 @@
-angular.module("falcorception.metric", []).component("metric", {
+module.exports = angular.module("falcorception.metric", []).component("metric", {
   templateUrl: "components/metric.html",
   bindings: {
     label: "@",

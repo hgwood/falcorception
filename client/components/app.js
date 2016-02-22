@@ -1,4 +1,6 @@
-angular.module("falcorception.app", [])
+const co = require('co')
+
+module.exports = angular.module("falcorception.app", [])
 
 .config(function ($routeProvider) {
   $routeProvider
