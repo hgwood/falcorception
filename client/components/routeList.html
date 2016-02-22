@@ -1,4 +1,4 @@
-<a ng-href="#/apis/{{::api.id}}/routes/{{::route.id}}" ng-repeat="route in $ctrl.api.routes.mostRecentFirst">
+<a ng-href="#/apis/{{::$ctrl.api.id}}/routes/{{::route.id}}" ng-repeat="route in $ctrl.api.routes.mostRecentFirst">
   <div class="well">
     <h2>{{::route.name}} <small>{{::route.id}}</small></h2>
     <h4>{{::route.matcher}}</h4>
