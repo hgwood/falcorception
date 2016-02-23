@@ -1,13 +1,17 @@
+require("lodash") // global _
+require("angular") // global angular
+require("angular-route") // load module
+
 angular.module("falcorception", [
   "ngRoute",
-  "falcorception.app",
-  "falcorception.jumbotron",
-  "falcorception.metric",
-  "falcorception.apiList",
-  "falcorception.api",
-  "falcorception.routeList",
-  "falcorception.route",
-  "falcorception.source",
-  "falcorception.vendor.falcor",
-  "falcorception.falcorModel"
+  require("./components/app").name,
+  require("./components/jumbotron").name,
+  require("./components/metric").name,
+  require("./components/apiList/apiList").name,
+  require("./components/api").name,
+  require("./components/routeList").name,
+  require("./components/route").name,
+  require("./components/source").name,
+  require("./services/falcor.service").name,
+  require("./services/falcorModel.service").name
 ])

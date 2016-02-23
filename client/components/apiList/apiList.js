@@ -1,4 +1,4 @@
-angular.module("falcorception.apiList", []).component("apiList", {
+module.exports = angular.module("falcorception.apiList", []).component("apiList", {
   templateUrl: "components/apiList/apiList.html",
   bindings: {
     apis: "<",

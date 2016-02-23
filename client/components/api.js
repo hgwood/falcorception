@@ -1,4 +1,6 @@
-angular.module("falcorception.api", [])
+const co = require("co")
+
+module.exports = angular.module("falcorception.api", [])
 
 .config(function ($routeProvider) {
   $routeProvider
