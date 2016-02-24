@@ -1,5 +1,6 @@
-<a ng-href="#/apis/{{::api.id}}" ng-repeat="api in $ctrl.apis">
-  <div class="well">
-    <h2>{{::api.name}} <small>{{::api.id}}</small></h2>
-  </div>
-</a>
+<div class="well" ng-click="$ctrl.click($event, api)" ng-repeat="api in $ctrl.apis">
+  <h2 editable-text="api.name">
+    <button class="btn btn-default"><span class="glyphicon glyphicon-pencil"></span></button>
+    {{api.name}} <small>{{::api.id}}</small>
+  </h2>
+</div>
