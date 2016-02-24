@@ -17,6 +17,7 @@
   "dependencies": {
     "angular": "^1.5.0",
     "angular-route": "^1.5.0",
+    "angular-xeditable-npm": "^0.1.9",
     "bootstrap": "^3.3.6",
     "bootswatch": "^3.3.6",
     "co": "^4.6.0",

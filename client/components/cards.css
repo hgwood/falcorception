@@ -5,15 +5,31 @@
     flex-wrap: wrap;
 }
 
-.cards a {
-  margin: 1%;
-  width: 350px;
+.cards div {
+    margin: 1%;
+    width: 350px;
+    position: relative;
 }
 
-.cards a:hover {
-  text-decoration: none;
+.cards div:hover {
+    text-decoration: none;
+    cursor : pointer;
 }
 
-.cards a .well:hover {
-  border: 1px solid #00AA00;
+.cards div .well:hover {
+    border: 1px solid #00AA00;
+}
+
+.cards div h2:hover {
+    cursor: text;
+}
+
+.cards div h2 button {
+    display : none;
+}
+
+.cards div h2:hover button {
+    display : inline-block;
+    position : absolute;
+    left : -40px;
 }
