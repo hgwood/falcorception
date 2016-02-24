@@ -1,0 +1,8 @@
+{
+  "globals": {
+    "_": true,
+    "angular": true,
+    "co": true,
+    "falcor": true
+  }
+}

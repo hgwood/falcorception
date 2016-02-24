@@ -13,5 +13,5 @@ angular.module("falcorception", [
   require("./components/route").name,
   require("./components/source").name,
   require("./services/falcor.service").name,
-  require("./services/falcorModel.service").name
+  require("./services/falcorModel.service").name,
 ])

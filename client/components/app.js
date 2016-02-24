@@ -1,4 +1,4 @@
-const co = require('co')
+const co = require("co")
 
 module.exports = angular.module("falcorception.app", [])
 
@@ -11,7 +11,7 @@ module.exports = angular.module("falcorception.app", [])
           ["apis", "length"],
           ["apis", {from: 0, length: 10}, ["id", "name"]],
           ["apis", {from: 0, length: 10}, "routes", "length"])
-          .then(_.property("json.apis"))
+          .then(_.property("json.apis")),
       },
     })
     .otherwise("/falcorception")
@@ -27,9 +27,9 @@ module.exports = angular.module("falcorception.app", [])
     const ctrl = this
     ctrl.createApi = co.wrap(function* () {
       const response = yield falcorModel.call(
-        "apis.create", 
-        ["someName"], 
-        [["id"], ["name"]], 
+        "apis.create",
+        ["someName"],
+        [["id"], ["name"]],
         [[{from: 0, length: 10}, ["id", "name"]], ["length"]])
       ctrl.apis = response.json.apis
       $scope.$apply()

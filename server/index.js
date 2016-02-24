@@ -20,7 +20,7 @@ app.use("/falcorception.json", falcorExpress.dataSourceRoute(function () {
   return new falcorRouter([
     {
       route: "meta.napis",
-      get: () => ({path: ["meta", "napis"], value: 2001})
+      get: () => ({path: ["meta", "napis"], value: 2001}),
     },
     {
       route: "apis[{integers:indices}]",
@@ -37,7 +37,7 @@ app.use("/falcorception.json", falcorExpress.dataSourceRoute(function () {
           .pickBy(_.identity)
           .map((api, index) => ({path: ["apis", index], value: {$type: "ref", value: ["apisById", api.id]}}))
           .value()
-      }
+      },
     },
     {
       route: "apisById[{keys:ids}][{keys:props}]",
@@ -53,7 +53,7 @@ app.use("/falcorception.json", falcorExpress.dataSourceRoute(function () {
       route: "['apis', 'apisById'].length",
       get(pathSet) {
         return [{path: pathSet, value: rw().apisById.length}]
-      }
+      },
     },
     {
       route: "apisById[{keys:ids}].routes.create",
@@ -74,7 +74,7 @@ app.use("/falcorception.json", falcorExpress.dataSourceRoute(function () {
           .push({path: ["apisById", apiId, "routes", "length"], value: newLength})
           .push({path: ["apisById", apiId, "routes", "lastAdded"], value: {$type: "ref", value: ["apisById", apiId, "routes", "byIds", route.id]}})
           .value()
-      }
+      },
     },
     {
       route: "apis.create",
@@ -91,7 +91,7 @@ app.use("/falcorception.json", falcorExpress.dataSourceRoute(function () {
           jsonGraph: {
             apis: {
               [newLength - 1]: {$type: "ref", value: ["apisById", id]},
-              length: newLength
+              length: newLength,
             },
           },
         }
@@ -113,7 +113,7 @@ app.use("/falcorception.json", falcorExpress.dataSourceRoute(function () {
             })
           })
           .value()
-      }
+      },
     },
     {
       route: "apisById[{keys:ids}].routes.length",
@@ -125,7 +125,7 @@ app.use("/falcorception.json", falcorExpress.dataSourceRoute(function () {
           .mapValues("routes.length")
           .map((length, apiId) => ({path: ["apisById", apiId, "routes", "length"], value: length}))
           .value()
-      }
+      },
     },
     {
       route: "apisById[{keys:apiIds}].routes.byIds[{keys:routeIds}][{keys:props}]",
@@ -144,7 +144,7 @@ app.use("/falcorception.json", falcorExpress.dataSourceRoute(function () {
             })
           })
           .value()
-      }
+      },
     },
     {
       route: "apisById[{keys:apiIds}].routes.byIds[{keys:routeIds}].source",
@@ -158,13 +158,13 @@ app.use("/falcorception.json", falcorExpress.dataSourceRoute(function () {
           .flatMap((routes, apiId) => {
             return _.flatMap(routes, (route, routeId) => {
               return {
-                path: ["apisById", apiId, "routes", "byIds", routeId, "source"], 
-                value: {$type: "ref", value: ["sources", route.source.id]}
+                path: ["apisById", apiId, "routes", "byIds", routeId, "source"],
+                value: {$type: "ref", value: ["sources", route.source.id]},
               }
             })
           })
           .value()
-      }
+      },
     },
     {
       route: "sources[{keys:ids}][{keys:props}]",
@@ -176,8 +176,8 @@ app.use("/falcorception.json", falcorExpress.dataSourceRoute(function () {
             return _.map(pathSet.props, prop => ({path: ["sources", source.id, prop], value: source[prop]}))
           })
           .value()
-      }
-    }
+      },
+    },
   ])
 }))
 
