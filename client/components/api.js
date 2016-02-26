@@ -22,18 +22,8 @@ module.exports = angular.module("falcorception.api", [])
   bindings: {
     api: "=",
   },
-  controller(falcorModel, $scope) {
+  controller($location) {
     const ctrl = this
-    ctrl.createRoute = co.wrap(function* () {
-      const response = yield falcorModel.call(
-        ["apisById", ctrl.api.id, "routes", "create"],
-        ["someRouteName", "thePathOfTheRoute"],
-        ["id", "name", "matcher", "created"],
-        [["length"], ["mostRecentFirst", {from: 0, length: 10}, ["id", "name", "matcher", "created"]]])
-      const routes = response.json.apisById[ctrl.api.id].routes
-      routes.mostRecentFirst.length = routes.length
-      ctrl.api.routes = routes
-      $scope.$apply()
-    })
+    ctrl.createRoute = () => $location.path(`/apis/${ctrl.api.id}/route-create`)
   },
 })

@@ -7,8 +7,8 @@ module.exports = angular.module("falcorception.source", [])
       resolve: {
         source: (falcorModel, $route) =>
           falcorModel.get(
-            ["sources", $route.current.params.id, ["id", "name", "kind"]]
-          ).then(_.property(["json", "sources", $route.current.params.id])),
+            ["sources", "by", "id", $route.current.params.id, ["id", "name", "kind"]]
+          ).then(_.property(["json", "sources", "by", "id", $route.current.params.id])),
       },
     })
 })

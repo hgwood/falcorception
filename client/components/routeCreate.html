@@ -1,0 +1,45 @@
+<jumbotron title="{{::$ctrl.route.name}}"></jumbotron>
+
+<div class="container">
+  <form name="routeCreationForm">
+    <div class="form-group">
+      <label for="matcher">Matcher</label>
+      <input
+        ng-model="$ctrl.route.matcher"
+        required
+        id="matcher"
+        class="form-control"
+        placeholder="a.b['id', 'name']">
+    </div>
+    <div class="form-group">
+      <label for="source">Source</label>
+      <select
+        ng-model="$ctrl.route.source.id"
+        ng-options="source.id as source.name for source in $ctrl.sources"
+        required
+        id="source"
+        class="form-control"
+        placeholder="Source">
+      </select>
+    </div>
+    <div ng-show="$ctrl.route.source.id">
+      <div class="form-group">
+        <label for="query">Query</label>
+        <input
+          ng-model="$ctrl.route.query"
+          required
+          id="query"
+          class="form-control"
+          placeholder="">
+      </div>
+    </div>
+    <button
+      ng-click="$ctrl.submit($ctrl.route)"
+      ng-disabled="routeCreationForm.$invalid"
+      type="submit"
+      class="btn btn-primary">
+      Create!
+    </button>
+    <button type="submit" class="btn default">Cancel</button>
+  </form>
+</div>

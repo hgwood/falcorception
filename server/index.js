@@ -62,12 +62,20 @@ app.use("/falcorception.json", falcorExpress.dataSourceRoute(function () {
         const routeName = args[0]
         const routeMatcher = args[1]
         const routeId = shortid.generate()
-        const route = {id: routeId, name: routeName, matcher: routeMatcher, created: new Date().toISOString()}
+        const route = {
+          id: routeId,
+          name: routeName,
+          matcher: routeMatcher,
+          created: new Date().toISOString(),
+          source: {id: args[2]},
+          query: args[3]
+        }
         const newLength = rw(function (model) {
           model.apisById[apiId].routes[route.id] = route
           return model.apisById[apiId].routes.length += 1
         })
         return _(route)
+          .pickBy(_.negate(_.isObjectLike))
           .map((value, key) => {
             return {path: ["apisById", apiId, "routes", "byIds", route.id, key], value}
           })
@@ -159,7 +167,7 @@ app.use("/falcorception.json", falcorExpress.dataSourceRoute(function () {
             return _.flatMap(routes, (route, routeId) => {
               return {
                 path: ["apisById", apiId, "routes", "byIds", routeId, "source"],
-                value: {$type: "ref", value: ["sources", route.source.id]},
+                value: {$type: "ref", value: ["sources", "by", "id", route.source.id]},
               }
             })
           })
@@ -167,13 +175,24 @@ app.use("/falcorception.json", falcorExpress.dataSourceRoute(function () {
       },
     },
     {
-      route: "sources[{keys:ids}][{keys:props}]",
+      route: "sources.by.creation[{keys:ids}]",
+      get(pathSet) {
+        const data = rw()
+        return _(data.sources)
+          .values()
+          .pick(pathSet.ids)
+          .map((source, index) => ({path: ["sources", "by", "creation", index], value: {$type: "ref", value: ["sources", "by", "id", source.id]}}))
+          .value()
+      },
+    },
+    {
+      route: "sources.by.id[{keys:ids}][{keys:props}]",
       get(pathSet) {
         const data = rw()
         return _(data.sources)
           .pick(pathSet.ids)
           .flatMap(source => {
-            return _.map(pathSet.props, prop => ({path: ["sources", source.id, prop], value: source[prop]}))
+            return _.map(pathSet.props, prop => ({path: ["sources", "by", "id", source.id, prop], value: source[prop]}))
           })
           .value()
       },

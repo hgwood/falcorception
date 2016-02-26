@@ -74,14 +74,15 @@
             "id": "SourceA"
           }
         },
-        "E1BCef7ol": {
-          "id": "E1BCef7ol",
-          "name": "someRouteName",
-          "matcher": "thePathOfTheRoute",
-          "created": "2016-02-21T20:44:36.245Z",
+        "VyiQIaKjx": {
+          "id": "VyiQIaKjx",
+          "name": "Unamed route",
+          "matcher": "a",
+          "created": "2016-02-26T22:51:54.934Z",
           "source": {
             "id": "SourceA"
-          }
+          },
+          "query": "a"
         }
       }
     },
