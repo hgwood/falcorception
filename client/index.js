@@ -15,4 +15,5 @@ angular.module("falcorception", [
   require("./components/source").name,
   require("./services/falcor.service").name,
   require("./services/falcorModel.service").name,
+  require("./filters/health.filter").name,
 ])

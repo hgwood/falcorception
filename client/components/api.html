@@ -1,6 +1,7 @@
 <jumbotron title="{{::$ctrl.api.name}}">
 </jumbotron>
 <div class="dashboard">
+  <metric label="Status" value="$ctrl.health | health"></metric>
   <metric label="Routes" value="$ctrl.api.routes.length" action-label="Create one!" action="$ctrl.createRoute()"></metric>
   <metric label="Requests" value="501"></metric>
 </div>

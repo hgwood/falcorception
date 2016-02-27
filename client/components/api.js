@@ -1,4 +1,5 @@
 const co = require("co")
+const HttpDataSource = require("falcor-http-datasource")
 
 module.exports = angular.module("falcorception.api", [])
 
@@ -9,7 +10,7 @@ module.exports = angular.module("falcorception.api", [])
       resolve: {
         api: (falcorModel, $route) =>
           falcorModel.get(
-            ["apisById", $route.current.params.id, ["id", "name"]],
+            ["apisById", $route.current.params.id, ["id", "name", "url"]],
             ["apisById", $route.current.params.id, "routes", "length"],
             ["apisById", $route.current.params.id, "routes", "mostRecentFirst", {from: 0, length: 10}, ["id", "name", "matcher", "created"]]
           ).then(_.property(["json", "apisById", $route.current.params.id])),
@@ -22,8 +23,13 @@ module.exports = angular.module("falcorception.api", [])
   bindings: {
     api: "=",
   },
-  controller($location) {
+  controller($scope, $location, falcor) {
     const ctrl = this
     ctrl.createRoute = () => $location.path(`/apis/${ctrl.api.id}/route-create`)
+    const model = new falcor.Model({source: new HttpDataSource(ctrl.api.url)}).batch()
+    model.get(["health"]).then(function () {
+      ctrl.health = true
+      $scope.$apply()
+    })
   },
 })

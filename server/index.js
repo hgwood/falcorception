@@ -91,10 +91,12 @@ app.use("/falcorception.json", falcorExpress.dataSourceRoute(function () {
         const name = args[0]
         const id = shortid.generate()
         const created = new Date().toISOString()
+        const url = `/${id}`
         const newLength = rw(function (model) {
-          model.apisById[id] = {id, name, created, routes: {length: 0}}
+          model.apisById[id] = {id, name, created, url, routes: {length: 0}}
           return model.apis.push(id)
         })
+        runApi(url)
         return {
           paths: [["apis", [newLength - 1, "length"]]],
           jsonGraph: {
@@ -203,10 +205,29 @@ app.use("/falcorception.json", falcorExpress.dataSourceRoute(function () {
 
 app.listen(9009)
 
+_(rw().apisById)
+  .values()
+  .map("url")
+  .compact()
+  .each(runApi)
+
 function rw(mutator) {
   const dataPath = path.join(__dirname, "data.json")
   const data = JSON.parse(fs.readFileSync(dataPath))
   const result = mutator ? mutator(data) : data
   fs.writeFileSync(dataPath, JSON.stringify(data, null, 2))
   return result
+}
+
+function runApi(url) {
+  app.use(url, falcorExpress.dataSourceRoute(function () {
+    return new falcorRouter([
+      {
+        route: "health",
+        get(pathSet) {
+          return {path: ["health"], value: "OK"}
+        }
+      }
+    ])
+  }))
 }

@@ -29,7 +29,7 @@ module.exports = angular.module("falcorception.app", [])
       const response = yield falcorModel.call(
         "apis.create",
         ["someName"],
-        [["id"], ["name"]],
+        [["id"], ["name"], ["url"]],
         [[{from: 0, length: 10}, ["id", "name"]], ["length"]])
       ctrl.apis = response.json.apis
       $scope.$apply()
