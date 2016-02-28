@@ -1,4 +1,9 @@
 <div class="container">
+  <div class="panel panel-default">
+  <div class="panel-heading">
+    Client
+  </div>
+  <div class="panel-body">
   <form name="falcorClientForm">
     <div class="form-group">
       <label for="paths">Paths</label>
@@ -14,12 +19,13 @@
       ng-disabled="falcorClientForm.$invalid"
       type="submit"
       class="btn btn-primary">
-      Create!
+      Get!
     </button>
   </form>
   <div ng-show="$ctrl.response" class="falcor-client-response">
     <pre>
       {{$ctrl.response | json}}
     </pre>
+  </div>
   </div>
 </div>
