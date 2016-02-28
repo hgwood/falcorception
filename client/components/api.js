@@ -23,10 +23,10 @@ module.exports = angular.module("falcorception.api", [])
   bindings: {
     api: "=",
   },
-  controller($scope, $location, falcor) {
+  controller($scope, $location, falcorFactory) {
     const ctrl = this
     ctrl.createRoute = () => $location.path(`/apis/${ctrl.api.id}/route-create`)
-    const model = new falcor.Model({source: new HttpDataSource(ctrl.api.url)}).batch()
+    const model = falcorFactory(ctrl.api.url)
     model.get(["health"]).then(function () {
       ctrl.health = true
       $scope.$apply()

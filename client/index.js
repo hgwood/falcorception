@@ -9,11 +9,13 @@ angular.module("falcorception", [
   require("./components/metric").name,
   require("./components/apiList/apiList").name,
   require("./components/api").name,
+  require("./components/falcorClient").name,
   require("./components/routeList").name,
   require("./components/route").name,
   require("./components/routeCreate").name,
   require("./components/source").name,
   require("./services/falcor.service").name,
+  require("./services/falcorFactory.service").name,
   require("./services/falcorModel.service").name,
   require("./filters/health.filter").name,
 ])

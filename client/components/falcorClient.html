@@ -1,0 +1,25 @@
+<div class="container">
+  <form name="falcorClientForm">
+    <div class="form-group">
+      <label for="paths">Paths</label>
+      <input
+        ng-model="$ctrl.paths"
+        required
+        id="paths"
+        class="form-control"
+        placeholder="a.b['id', 'name']">
+    </div>
+    <button
+      ng-click="$ctrl.submit($ctrl.paths)"
+      ng-disabled="falcorClientForm.$invalid"
+      type="submit"
+      class="btn btn-primary">
+      Create!
+    </button>
+  </form>
+  <div ng-show="$ctrl.response" class="falcor-client-response">
+    <pre>
+      {{$ctrl.response | json}}
+    </pre>
+  </div>
+</div>
