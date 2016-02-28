@@ -14,7 +14,17 @@
       "name": "someName",
       "created": "2016-01-01T00:00:00Z",
       "routes": {
-        "length": 0
+        "length": 1,
+        "VyNDiI2og": {
+          "id": "VyNDiI2og",
+          "name": "Unamed route",
+          "matcher": "a.b.c",
+          "created": "2016-02-28T21:53:07.597Z",
+          "source": {
+            "id": "SourceA"
+          },
+          "query": "nope"
+        }
       }
     },
     "Nkrh8yMog": {
