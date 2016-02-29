@@ -1,5 +1,5 @@
-const HttpDataSource = require("falcor-http-datasource")
-
-module.exports = angular.module("falcorception.falcorModel", []).service("falcorModel", function (falcorFactory) {
+module.exports = angular.module("falcorception.falcorModel", [
+  require("./falcorFactory.service").name,
+]).service("falcorModel", function (falcorFactory) {
   return falcorFactory("/falcorception.json")
 })

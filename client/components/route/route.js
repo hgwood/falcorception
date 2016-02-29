@@ -1,4 +1,9 @@
-module.exports = angular.module("falcorception.route", [])
+module.exports = angular.module("falcorception.route", [
+  require("../../services/falcorModel.service").name,
+  require("../jumbotron/jumbotron").name,
+  require("../metric/metric").name,
+  require("../source/source").name,
+])
 
 .config(function ($routeProvider) {
   $routeProvider
@@ -16,7 +21,7 @@ module.exports = angular.module("falcorception.route", [])
 })
 
 .component("route", {
-  templateUrl: "components/route.html",
+  templateUrl: "components/route/route.html",
   bindings: {
     route: "<",
   },
