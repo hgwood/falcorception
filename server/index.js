@@ -74,6 +74,7 @@ app.use("/falcorception.json", falcorExpress.dataSourceRoute(function () {
           model.apisById[apiId].routes[route.id] = route
           return model.apisById[apiId].routes.length += 1
         })
+        runApi[apiId].push(actualRoute(route))
         return _(route)
           .pickBy(_.negate(_.isObjectLike))
           .map((value, key) => {
@@ -220,27 +221,30 @@ function rw(mutator) {
 }
 
 function runApi(api) {
-  app.use(api.url, falcorExpress.dataSourceRoute(function () {
-    const healthRoute = {
-      route: "health",
-      get(pathSet) {
-        return {path: ["health"], value: "OK"}
-      }
+  const healthRoute = {
+    route: "health",
+    get(pathSet) {
+      return {path: ["health"], value: "OK"}
     }
-    const routes = _(api.routes)
-      .omit("length")
-      .values()
-      .map(route => {
-        return {
-          route: route.matcher,
-          get(pathSet) {
-            const firstPath = _.map(pathSet, subpath => _.isArray(subpath) ? subpath[0] : subpath)
-            return [{path: firstPath, value: "The API is running this route but the route is not implemented"}]
-          }
-        }
-      })
-      .push(healthRoute)
-      .value()
+  }
+  const routes = _(api.routes || {})
+    .omit("length")
+    .values()
+    .map(actualRoute)
+    .push(healthRoute)
+    .value()
+  runApi[api.id] = routes
+  app.use(api.url, falcorExpress.dataSourceRoute(function () {
     return new falcorRouter(routes)
   }))
+}
+
+function actualRoute(routeDefinition) {
+  return {
+    route: routeDefinition.matcher,
+    get(pathSet) {
+      const firstPath = _.map(pathSet, subpath => _.isArray(subpath) ? subpath[0] : subpath)
+      return [{path: firstPath, value: "The API is running this route but the route is not implemented"}]
+    }
+  }
 }
