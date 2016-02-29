@@ -9,6 +9,7 @@ const falcorRouter = require("falcor-router")
 const falcorExpress = require("falcor-express")
 const fs = require("fs")
 const path = require("path")
+const Firebase = require("firebase")
 
 const app = express()
 
@@ -74,7 +75,9 @@ app.use("/falcorception.json", falcorExpress.dataSourceRoute(function () {
           model.apisById[apiId].routes[route.id] = route
           return model.apisById[apiId].routes.length += 1
         })
-        runApi[apiId].push(actualRoute(route))
+        const data = rw()
+        const source = data.sources[route.source.id]
+        runApi[apiId].push(source.kind === "firebase" ? firebaseRoute(route, source.config) : fakeRoute(route))
         return _(route)
           .pickBy(_.negate(_.isObjectLike))
           .map((value, key) => {
@@ -221,6 +224,7 @@ function rw(mutator) {
 }
 
 function runApi(api) {
+  const data = rw()
   const healthRoute = {
     route: "health",
     get(pathSet) {
@@ -230,7 +234,10 @@ function runApi(api) {
   const routes = _(api.routes || {})
     .omit("length")
     .values()
-    .map(actualRoute)
+    .map(route => {
+      const source = data.sources[route.source.id]
+      return source.kind === "firebase" ? firebaseRoute(route, source.config) : fakeRoute(route)
+    })
     .push(healthRoute)
     .value()
   runApi[api.id] = routes
@@ -239,12 +246,25 @@ function runApi(api) {
   }))
 }
 
-function actualRoute(routeDefinition) {
+function fakeRoute(routeDefinition) {
   return {
     route: routeDefinition.matcher,
     get(pathSet) {
       const firstPath = _.map(pathSet, subpath => _.isArray(subpath) ? subpath[0] : subpath)
       return [{path: firstPath, value: "The API is running this route but the route is not implemented"}]
+    }
+  }
+}
+
+function firebaseRoute(routeDefinition, sourceConfig) {
+  const source = new Firebase(sourceConfig.url)
+  return {
+    route: routeDefinition.matcher,
+    get(pathSet) {
+      const firstPath = _.map(pathSet, subpath => _.isArray(subpath) ? subpath[0] : subpath)
+      return source.child(routeDefinition.query).once("value").then(snapshot => {
+        return [{path: firstPath, value: snapshot.val()}]
+      })
     }
   }
 }

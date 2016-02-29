@@ -123,7 +123,10 @@
     "SourceA": {
       "id": "SourceA",
       "name": "SourceA Name",
-      "kind": "MongoDB"
+      "kind": "firebase",
+      "config": {
+        "url": "https://boiling-fire-3739.firebaseio.com/test/falcorception"
+      }
     }
   }
 }
