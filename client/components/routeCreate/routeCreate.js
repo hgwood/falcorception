@@ -1,6 +1,10 @@
 const co = require("co")
 
-module.exports = angular.module("falcorception.routeCreate", [])
+module.exports = angular.module("falcorception.routeCreate", [
+  require("../../services/falcorModel.service").name,
+  require("../jumbotron/jumbotron").name,
+  require("../metric/metric").name,
+])
 
 .config(function ($routeProvider) {
   $routeProvider
@@ -8,7 +12,7 @@ module.exports = angular.module("falcorception.routeCreate", [])
       template: '<route-create api="$resolve.api" sources="$resolve.sources"></route-create>',
       resolve: {
         api: $route => ({id: $route.current.params.apiId}),
-        sources: (falcorModel, $route) =>
+        sources: falcorModel =>
           falcorModel.get(
             ["sources", "by", "creation", {from: 0, length: 10}, ["id", "name", "kind"]]
           ).then(_.property(["json", "sources", "by", "creation"])),
@@ -17,7 +21,7 @@ module.exports = angular.module("falcorception.routeCreate", [])
 })
 
 .component("routeCreate", {
-  templateUrl: "components/routeCreate.html",
+  templateUrl: "components/routeCreate/routeCreate.html",
   bindings: {
     api: "<",
     sources: "<",

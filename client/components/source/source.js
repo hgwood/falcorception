@@ -1,6 +1,8 @@
-module.exports = angular.module("falcorception.source", [])
-
-.config(function ($routeProvider) {
+module.exports = angular.module("falcorception.source", [
+  require("../../services/falcorModel.service").name,
+  require("../jumbotron/jumbotron").name,
+  require("../metric/metric").name,
+]).config(function ($routeProvider) {
   $routeProvider
     .when("/sources/:id", {
       template: '<source source="$resolve.source"></source>',
@@ -14,7 +16,7 @@ module.exports = angular.module("falcorception.source", [])
 })
 
 .component("source", {
-  templateUrl: "components/source.html",
+  templateUrl: "components/source/source.html",
   bindings: {
     source: "<",
   },

@@ -1,7 +1,12 @@
-const co = require("co")
-const HttpDataSource = require("falcor-http-datasource")
-
-module.exports = angular.module("falcorception.api", [])
+module.exports = angular.module("falcorception.api", [
+  require("../../services/falcorModel.service").name,
+  require("../../filters/health.filter").name,
+  require("../jumbotron/jumbotron").name,
+  require("../metric/metric").name,
+  require("../falcorClient/falcorClient").name,
+  require("../routeList/routeList").name,
+  require("../routeCreate/routeCreate").name,
+])
 
 .config(function ($routeProvider) {
   $routeProvider
@@ -19,7 +24,7 @@ module.exports = angular.module("falcorception.api", [])
 })
 
 .component("api", {
-  templateUrl: "components/api.html",
+  templateUrl: "components/api/api.html",
   bindings: {
     api: "=",
   },

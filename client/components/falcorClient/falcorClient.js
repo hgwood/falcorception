@@ -1,7 +1,7 @@
 const co = require("co")
 
 module.exports = angular.module("falcorception.falcorClient", []).component("falcorClient", {
-  templateUrl: "components/falcorClient.html",
+  templateUrl: "components/falcorClient/falcorClient.html",
   bindings: {
     api: "<",
   },

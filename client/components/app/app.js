@@ -1,6 +1,13 @@
 const co = require("co")
+require("angular-route") // load module
 
-module.exports = angular.module("falcorception.app", [])
+module.exports = angular.module("falcorception.app", [
+  "ngRoute",
+  require("../../services/falcorModel.service").name,
+  require("../jumbotron/jumbotron").name,
+  require("../metric/metric").name,
+  require("../apiList/apiList").name,
+])
 
 .config(function ($routeProvider) {
   $routeProvider
@@ -18,7 +25,7 @@ module.exports = angular.module("falcorception.app", [])
 })
 
 .component("app", {
-  templateUrl: "components/app.html",
+  templateUrl: "components/app/app.html",
   bindings: {
     napis: "=",
     apis: "=",

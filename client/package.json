@@ -5,8 +5,8 @@
   "scripts": {
     "start": "npm-run-all --parallel watch server",
     "watch": "mkdir -p build && watchify index.js -o build/bundle.js -d",
-    "server": "browser-sync start --proxy localhost:9009 --files \"build/bundle.js, *.css, components/*.css, *.html, components/*.html \"",
-    "lint": "eslint *.js components/*.js services/*.js"
+    "server": "browser-sync start --proxy localhost:9009 --files \"build/bundle.js, *.css, components/**/*.css, *.html, components/**/*.html \"",
+    "lint": "eslint *.js components/**/*.js services/*.js filters/*.js"
   },
   "author": "Hugo Wood <hx4.5@free.fr>",
   "license": "MIT",
