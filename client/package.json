@@ -4,7 +4,7 @@
   "description": "",
   "scripts": {
     "start": "npm-run-all --parallel watch server",
-    "watch": "mkdir -p build && watchify src/index.js -o build/bundle.js -d",
+    "watch": "mkdirp build && watchify src/index.js -o build/bundle.js -d",
     "server": "browser-sync start --proxy localhost:9009 --files \"build/bundle.js, src/**/*.css, src/**/*.html\" --startPath src",
     "lint": "eslint src/**/*.js"
   },
@@ -13,6 +13,7 @@
   "devDependencies": {
     "browser-sync": "^2.11.1",
     "eslint": "^2.2.0",
+    "mkdirp": "^0.5.1",
     "npm-run-all": "^1.5.1",
     "watchify": "^3.7.0"
   },
