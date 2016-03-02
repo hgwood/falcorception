@@ -4,5 +4,5 @@ require("angular-route") // load module
 
 angular.module("falcorception", [
   "ngRoute",
-  require("./components/app/app").name,
+  require("app/app").name,
 ])
