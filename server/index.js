@@ -10,6 +10,7 @@ const falcorExpress = require("falcor-express")
 const fs = require("fs")
 const path = require("path")
 const Firebase = require("firebase")
+const mustache = require("mustache")
 
 const app = express()
 
@@ -310,7 +311,8 @@ function firebaseRoute(routeDefinition, sourceConfig) {
     route: routeDefinition.matcher,
     get(pathSet) {
       const firstPath = _.map(pathSet, subpath => _.isArray(subpath) ? subpath[0] : subpath)
-      return source.child(routeDefinition.query).once("value").then(snapshot => {
+      const renderedQuery = mustache.render(routeDefinition.query, pathSet)
+      return source.child(renderedQuery).once("value").then(snapshot => {
         return [{path: firstPath, value: {$type: "atom", value: snapshot.val()}}]
       })
     }
