@@ -183,12 +183,60 @@ app.use("/falcorception.json", falcorExpress.dataSourceRoute(function () {
       },
     },
     {
-      route: "sources.by.creation[{keys:ids}]",
+      route: "sources.create",
+      call(pathSet, args) {
+        const source = {
+          id: shortid.generate(),
+          name: args[0],
+          created: new Date().toISOString(),
+          kind: args[1],
+          config: {url: args[2]}
+        }
+        try {
+          if (source.kind === "firebase") {
+            new Firebase(source.config.url)
+          }
+          const newLength = rw(model => {
+            model.sources[source.id] = source
+            return model.sources.length += 1
+          })
+          return {
+            paths: [["sources", ["lastAdded", "length"]]],
+            jsonGraph: {
+              sources: {
+                lastAdded: {
+                  $type: "ref",
+                  value: ["sources", "by", "id", source.id]
+                },
+                length: newLength
+              },
+            },
+          }
+        } catch (e) {
+           return {
+            paths: [["sources", ["lastAdded"]]],
+            jsonGraph: {
+              sources: {
+                lastAdded: {
+                  $type: "error",
+                  value: e.message
+                },
+              },
+            },
+          }
+        }
+      },
+    },
+    {
+      route: "sources.by.creation[{keys:indices}]",
       get(pathSet) {
         const data = rw()
         return _(data.sources)
+          .omit("length", "availableKinds")
           .values()
-          .pick(pathSet.ids)
+          .sortBy("created")
+          .pick(pathSet.indices)
+          .tap(console.log)
           .map((source, index) => ({path: ["sources", "by", "creation", index], value: {$type: "ref", value: ["sources", "by", "id", source.id]}}))
           .value()
       },
