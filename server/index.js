@@ -311,7 +311,7 @@ function firebaseRoute(routeDefinition, sourceConfig) {
     get(pathSet) {
       const firstPath = _.map(pathSet, subpath => _.isArray(subpath) ? subpath[0] : subpath)
       return source.child(routeDefinition.query).once("value").then(snapshot => {
-        return [{path: firstPath, value: snapshot.val()}]
+        return [{path: firstPath, value: {$type: "atom", value: snapshot.val()}}]
       })
     }
   }
