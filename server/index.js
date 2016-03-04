@@ -30,7 +30,7 @@ app.use("/falcorception.json", falcorExpress.dataSourceRoute(function () {
         const apis = _(data.apisById)
           .omit("length")
           .values()
-          .orderBy("created", "desc")
+          .orderBy("created", "asc")
           .value()
         return _(pathSet.indices)
           .zipObject(pathSet.indices)
@@ -103,10 +103,10 @@ app.use("/falcorception.json", falcorExpress.dataSourceRoute(function () {
         })
         runApi(api)
         return {
-          paths: [["apis", [newLength - 1, "length"]]],
+          paths: [["apis", ["lastAdded", "length"]]],
           jsonGraph: {
             apis: {
-              [newLength - 1]: {$type: "ref", value: ["apisById", id]},
+              lastAdded: {$type: "ref", value: ["apisById", id]},
               length: newLength,
             },
           },
