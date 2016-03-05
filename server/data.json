@@ -14,16 +14,36 @@
       "name": "someName",
       "created": "2016-01-01T00:00:00Z",
       "routes": {
-        "length": 1,
+        "length": 3,
         "VyNDiI2og": {
           "id": "VyNDiI2og",
           "name": "Unamed route",
           "matcher": "a.b.c",
           "created": "2016-02-28T21:53:07.597Z",
           "source": {
-            "id": "SourceA"
+            "id": "TestFirebase"
           },
           "query": "nope"
+        },
+        "NJ0f_l72g": {
+          "id": "NJ0f_l72g",
+          "name": "Unamed route",
+          "matcher": "fb",
+          "created": "2016-03-04T22:15:26.053Z",
+          "source": {
+            "id": "TestFirebase"
+          },
+          "query": "test"
+        },
+        "EyF0sxmhg": {
+          "id": "EyF0sxmhg",
+          "name": "Unamed route",
+          "matcher": "fbv[{keys:prop}]",
+          "created": "2016-03-04T22:31:20.657Z",
+          "source": {
+            "id": "TestFirebase"
+          },
+          "query": "test/{{prop}}"
         }
       }
     },
@@ -39,7 +59,7 @@
           "matcher": "thePathOfTheRoute",
           "created": "2016-02-21T20:44:36.245Z",
           "source": {
-            "id": "SourceA"
+            "id": "TestFirebase"
           }
         },
         "length": 1
@@ -57,7 +77,7 @@
           "matcher": "thePathOfTheRoute",
           "created": "2016-02-21T20:44:36.245Z",
           "source": {
-            "id": "SourceA"
+            "id": "TestFirebase"
           }
         },
         "length": 1
@@ -76,7 +96,7 @@
           "matcher": "thePathOfTheRoute",
           "created": "2016-02-21T20:44:33.996Z",
           "source": {
-            "id": "SourceA"
+            "id": "TestFirebase"
           }
         },
         "EJVRezQil": {
@@ -85,7 +105,7 @@
           "matcher": "thePathOfTheRoute",
           "created": "2016-02-21T20:44:35.213Z",
           "source": {
-            "id": "SourceA"
+            "id": "TestFirebase"
           }
         },
         "VyiQIaKjx": {
@@ -94,7 +114,7 @@
           "matcher": "a",
           "created": "2016-02-26T22:51:54.934Z",
           "source": {
-            "id": "SourceA"
+            "id": "TestFirebase"
           },
           "query": "a"
         }
@@ -112,7 +132,7 @@
           "matcher": "thePathOfTheRoute",
           "created": "2016-02-21T20:44:36.245Z",
           "source": {
-            "id": "SourceA"
+            "id": "TestFirebase"
           }
         },
         "length": 1
@@ -120,9 +140,9 @@
     }
   },
   "sources": {
-    "SourceA": {
-      "id": "SourceA",
-      "name": "SourceA Name",
+    "TestFirebase": {
+      "id": "TestFirebase",
+      "name": "Test Firebase",
       "kind": "firebase",
       "config": {
         "url": "https://boiling-fire-3739.firebaseio.com/test/falcorception"
