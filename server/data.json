@@ -14,7 +14,7 @@
       "name": "someName",
       "created": "2016-01-01T00:00:00Z",
       "routes": {
-        "length": 3,
+        "length": 4,
         "VyNDiI2og": {
           "id": "VyNDiI2og",
           "name": "Unamed route",
@@ -44,6 +44,16 @@
             "id": "TestFirebase"
           },
           "query": "test/{{prop}}"
+        },
+        "NkyD5YHnx": {
+          "id": "NkyD5YHnx",
+          "name": "Unamed route",
+          "matcher": "trex",
+          "created": "2016-03-06T21:03:58.401Z",
+          "source": {
+            "id": "V1MH5KHnx"
+          },
+          "query": "/"
         }
       }
     },
@@ -147,6 +157,16 @@
       "config": {
         "url": "https://boiling-fire-3739.firebaseio.com/test/falcorception"
       }
-    }
+    },
+    "V1MH5KHnx": {
+      "id": "V1MH5KHnx",
+      "name": "GitHub REST API",
+      "created": "2016-03-06T21:03:29.828Z",
+      "kind": "rest",
+      "config": {
+        "url": "https://api.github.com"
+      }
+    },
+    "length": 2
   }
 }

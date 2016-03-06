@@ -11,6 +11,7 @@ const fs = require("fs")
 const path = require("path")
 const Firebase = require("firebase")
 const mustache = require("mustache")
+const requestPromise = require("request-promise")
 
 const app = express()
 
@@ -78,7 +79,7 @@ app.use("/falcorception.json", falcorExpress.dataSourceRoute(function () {
         })
         const data = rw()
         const source = data.sources[route.source.id]
-        runApi[apiId].push(source.kind === "firebase" ? firebaseRoute(route, source.config) : fakeRoute(route))
+        runApi[apiId].push(createFalcorRoute(route, source))
         return _(route)
           .pickBy(_.negate(_.isObjectLike))
           .map((value, key) => {
@@ -285,7 +286,7 @@ function runApi(api) {
     .values()
     .map(route => {
       const source = data.sources[route.source.id]
-      return source.kind === "firebase" ? firebaseRoute(route, source.config) : fakeRoute(route)
+      return createFalcorRoute(route, source)
     })
     .push(healthRoute)
     .value()
@@ -293,6 +294,10 @@ function runApi(api) {
   app.use(api.url, falcorExpress.dataSourceRoute(function () {
     return new falcorRouter(routes)
   }))
+}
+
+function createFalcorRoute(route, source) {
+  return source.kind === "firebase" ? firebaseRoute(route, source.config) : source.kind === "rest" ? restRoute(route, source.config) : fakeRoute(route)
 }
 
 function fakeRoute(routeDefinition) {
@@ -314,6 +319,19 @@ function firebaseRoute(routeDefinition, sourceConfig) {
       const renderedQuery = mustache.render(routeDefinition.query, pathSet)
       return source.child(renderedQuery).once("value").then(snapshot => {
         return [{path: firstPath, value: {$type: "atom", value: snapshot.val()}}]
+      })
+    }
+  }
+}
+
+function restRoute(routeDefinition, sourceConfig) {
+  return {
+    route: routeDefinition.matcher,
+    get(pathSet) {
+      const firstPath = _.map(pathSet, subpath => _.isArray(subpath) ? subpath[0] : subpath)
+      const renderedQuery = mustache.render(routeDefinition.query, pathSet)
+      return requestPromise({uri: sourceConfig.url + renderedQuery, json: true, headers: {"User-Agent": "hgwood"}}).then(response => {
+        return [{path: firstPath, value: {$type: "atom", value: response}}]
       })
     }
   }
