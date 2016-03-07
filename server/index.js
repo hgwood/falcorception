@@ -62,13 +62,11 @@ app.use("/falcorception.json", falcorExpress.dataSourceRoute(function () {
       route: "apisById[{keys:ids}].routes.create",
       call(pathSet, args) {
         const apiId = pathSet.ids[0] // let's ignore the rest for now
-        const routeName = args[0]
-        const routeMatcher = args[1]
-        const routeId = shortid.generate()
         const route = {
-          id: routeId,
-          name: routeName,
-          matcher: routeMatcher,
+          id: shortid.generate(),
+          name: args[0],
+          method: args[1],
+          matcher: args[2],
           created: new Date().toISOString(),
           source: {id: args[2]},
           query: args[3]
@@ -303,7 +301,7 @@ function createFalcorRoute(route, source) {
 function fakeRoute(routeDefinition) {
   return {
     route: routeDefinition.matcher,
-    get(pathSet) {
+    [routeDefinition.method](pathSet) {
       const firstPath = _.map(pathSet, subpath => _.isArray(subpath) ? subpath[0] : subpath)
       return [{path: firstPath, value: "The API is running this route but the route is not implemented"}]
     }
@@ -314,7 +312,7 @@ function firebaseRoute(routeDefinition, sourceConfig) {
   const source = new Firebase(sourceConfig.url)
   return {
     route: routeDefinition.matcher,
-    get(pathSet) {
+    [routeDefinition.method](pathSet) {
       const firstPath = _.map(pathSet, subpath => _.isArray(subpath) ? subpath[0] : subpath)
       const renderedQuery = mustache.render(routeDefinition.query, pathSet)
       return source.child(renderedQuery).once("value").then(snapshot => {
@@ -327,7 +325,7 @@ function firebaseRoute(routeDefinition, sourceConfig) {
 function restRoute(routeDefinition, sourceConfig) {
   return {
     route: routeDefinition.matcher,
-    get(pathSet) {
+    [routeDefinition.method](pathSet) {
       const firstPath = _.map(pathSet, subpath => _.isArray(subpath) ? subpath[0] : subpath)
       const renderedQuery = mustache.render(routeDefinition.query, pathSet)
       return requestPromise({uri: sourceConfig.url + renderedQuery, json: true, headers: {"User-Agent": "hgwood"}}).then(response => {

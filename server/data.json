@@ -18,6 +18,7 @@
         "VyNDiI2og": {
           "id": "VyNDiI2og",
           "name": "Unamed route",
+          "method": "get",
           "matcher": "a.b.c",
           "created": "2016-02-28T21:53:07.597Z",
           "source": {
@@ -28,6 +29,7 @@
         "NJ0f_l72g": {
           "id": "NJ0f_l72g",
           "name": "Unamed route",
+          "method": "get",
           "matcher": "fb",
           "created": "2016-03-04T22:15:26.053Z",
           "source": {
@@ -38,6 +40,7 @@
         "EyF0sxmhg": {
           "id": "EyF0sxmhg",
           "name": "Unamed route",
+          "method": "get",
           "matcher": "fbv[{keys:prop}]",
           "created": "2016-03-04T22:31:20.657Z",
           "source": {
@@ -48,6 +51,7 @@
         "NkyD5YHnx": {
           "id": "NkyD5YHnx",
           "name": "Unamed route",
+          "method": "get",
           "matcher": "trex",
           "created": "2016-03-06T21:03:58.401Z",
           "source": {
@@ -66,6 +70,7 @@
         "VJer38yMig": {
           "id": "VJer38yMig",
           "name": "someRouteName",
+          "method": "get",
           "matcher": "thePathOfTheRoute",
           "created": "2016-02-21T20:44:36.245Z",
           "source": {
@@ -84,6 +89,7 @@
         "4kgwhU1zjg": {
           "id": "4kgwhU1zjg",
           "name": "someRouteName",
+          "method": "get",
           "matcher": "thePathOfTheRoute",
           "created": "2016-02-21T20:44:36.245Z",
           "source": {
@@ -103,6 +109,7 @@
         "E1z0gfXje": {
           "id": "E1z0gfXje",
           "name": "someRouteName",
+          "method": "get",
           "matcher": "thePathOfTheRoute",
           "created": "2016-02-21T20:44:33.996Z",
           "source": {
@@ -112,6 +119,7 @@
         "EJVRezQil": {
           "id": "EJVRezQil",
           "name": "someRouteName",
+          "method": "get",
           "matcher": "thePathOfTheRoute",
           "created": "2016-02-21T20:44:35.213Z",
           "source": {
@@ -121,6 +129,7 @@
         "VyiQIaKjx": {
           "id": "VyiQIaKjx",
           "name": "Unamed route",
+          "method": "get",
           "matcher": "a",
           "created": "2016-02-26T22:51:54.934Z",
           "source": {
@@ -139,6 +148,7 @@
         "E1euTcJMie": {
           "id": "E1euTcJMie",
           "name": "someRouteName",
+          "method": "get",
           "matcher": "thePathOfTheRoute",
           "created": "2016-02-21T20:44:36.245Z",
           "source": {
