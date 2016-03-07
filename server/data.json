@@ -8,6 +8,35 @@
   ],
   "apisById": {
     "length": 5,
+    "falcorception": {
+      "id": "falcorception",
+      "url": "/falcorception.json",
+      "name": "Falcorception",
+      "created": "2016-01-01T00:00:00Z",
+      "routes": {
+        "NyPX108ne": {
+          "id": "NyPX108ne",
+          "name": "APIs by ID",
+          "method": "get",
+          "matcher": "apisById[{keys:ids}][{keys:props}]",
+          "created": "2016-01-01T00:00:00Z",
+          "source": {
+            "id": "falcorception"
+          }
+        },
+        "EkKvb0U2e": {
+          "id": "EkKvb0U2e",
+          "name": "APIs by creation time",
+          "method": "get",
+          "matcher": "apis[{integers:indices}]",
+          "created": "2016-01-01T00:00:00Z",
+          "source": {
+            "id": "falcorception"
+          }
+        },
+        "length": 2
+      }
+    },
     "N1dJINkie": {
       "id": "N1dJINkie",
       "url": "/N1dJINkie",
@@ -167,6 +196,11 @@
       "config": {
         "url": "https://boiling-fire-3739.firebaseio.com/test/falcorception"
       }
+    },
+    "falcorception": {
+      "id": "falcorception",
+      "name": "Falcorception",
+      "kind": null
     },
     "V1MH5KHnx": {
       "id": "V1MH5KHnx",
