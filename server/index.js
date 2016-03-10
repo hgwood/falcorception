@@ -105,15 +105,15 @@ app.use("/falcorception.json", falcorExpress.dataSourceRoute(function () {
         const api = {id, name, created, url, routes: {length: 0}}
         const newLength = rw(function (model) {
           model.apisById[id] = api
-          model.apisById.length += 1
-          return model.apis.push(id)
+          return model.apisById.length += 1
         })
         runApi(api)
         return {
-          paths: [["apis", ["lastAdded", "length"]]],
+          paths: [["apis", ["lastAdded", newLength - 1, "length"]]],
           jsonGraph: {
             apis: {
               lastAdded: {$type: "ref", value: ["apisById", id]},
+              [newLength - 1]: {$type: "ref", value: ["apisById", id]},
               length: newLength,
             },
           },
