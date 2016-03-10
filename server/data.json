@@ -45,7 +45,7 @@
     }
   },
   "sources": {
-    "TestFirebase": {
+    "boilingfire": {
       "id": "boilingfire",
       "name": "Boiling Fire",
       "kind": "firebase",
