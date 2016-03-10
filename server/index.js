@@ -74,8 +74,8 @@ app.use("/falcorception.json", falcorExpress.dataSourceRoute(function () {
           method: args[1],
           matcher: args[2],
           created: new Date().toISOString(),
-          source: {id: args[2]},
-          query: args[3]
+          source: {id: args[3]},
+          query: args[4]
         }
         const newLength = rw(function (model) {
           model.apisById[apiId].routes[route.id] = route
@@ -243,7 +243,6 @@ app.use("/falcorception.json", falcorExpress.dataSourceRoute(function () {
           .values()
           .sortBy("created")
           .pick(pathSet.indices)
-          .tap(console.log)
           .map((source, index) => ({path: ["sources", "by", "creation", index], value: {$type: "ref", value: ["sources", "by", "id", source.id]}}))
           .value()
       },
