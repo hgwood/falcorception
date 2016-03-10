@@ -105,6 +105,7 @@ app.use("/falcorception.json", falcorExpress.dataSourceRoute(function () {
         const api = {id, name, created, url, routes: {length: 0}}
         const newLength = rw(function (model) {
           model.apisById[id] = api
+          model.apisById.length += 1
           return model.apis.push(id)
         })
         runApi(api)
