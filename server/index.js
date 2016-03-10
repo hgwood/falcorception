@@ -51,6 +51,12 @@ app.use("/falcorception.json", falcorExpress.dataSourceRoute(function () {
           .flatMap(api => _.map(pathSet.props, prop => ({path: ["apisById", api.id, prop], value: api[prop]})))
           .value()
       },
+      set(updates) {
+        rw(data => {
+          return _.merge(data, updates)
+        })
+        return {jsonGraph: updates}
+      }
     },
     {
       route: "['apis', 'apisById'].length",
