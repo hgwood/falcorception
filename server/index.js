@@ -190,7 +190,7 @@ app.use("/falcorception.json", falcorExpress.dataSourceRoute(function () {
           name: args[0],
           created: new Date().toISOString(),
           kind: args[1],
-          config: {url: args[2]}
+          config: args[2]
         }
         try {
           if (source.kind === "firebase") {
@@ -295,7 +295,7 @@ function runApi(api) {
 }
 
 function createFalcorRoute(route, source) {
-  return source.kind === "firebase" ? firebaseRoute(route, source.config) : source.kind === "rest" ? restRoute(route, source.config) : fakeRoute(route)
+  return ({firebase: firebaseRoute, rest: restRoute, json: jsonRoute}[source.kind] || fakeRoute)(route, source.config)
 }
 
 function fakeRoute(routeDefinition) {
@@ -331,6 +331,18 @@ function restRoute(routeDefinition, sourceConfig) {
       return requestPromise({uri: sourceConfig.url + renderedQuery, json: true, headers: {"User-Agent": "hgwood"}}).then(response => {
         return [{path: firstPath, value: {$type: "atom", value: response}}]
       })
+    }
+  }
+}
+
+function jsonRoute(routeDefinition, sourceConfig) {
+  const model = JSON.parse(sourceConfig.json)
+  return {
+    route: routeDefinition.matcher,
+    [routeDefinition.method](pathSet) {
+      const firstPath = _.map(pathSet, subpath => _.isArray(subpath) ? subpath[0] : subpath)
+      const renderedQuery = mustache.render(routeDefinition.query, pathSet)
+      return [{path: firstPath, value: {$type: "atom", value: _.get(model, renderedQuery)}}]
     }
   }
 }
