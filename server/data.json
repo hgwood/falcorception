@@ -1,19 +1,14 @@
 {
   "apis": [
-    "N1dJINkie",
-    "Nkrh8yMog",
-    "VyD38JGje",
-    "N1V69kMie",
-    "Ek_Tqyfog",
-    "EJbIOC82l",
-    "4kr2dtthl",
-    "EkNR_YKnl",
-    "4kHKtYY2g",
-    "4199FFY2x",
-    "VkdiFtK2g"
+    "falcorception",
+    "4yzvxR9nx",
+    "4ysf-0qhg",
+    "N1k8-Cq3g",
+    "4kLKWR5nx",
+    "NyDT-R5hg"
   ],
   "apisById": {
-    "length": 7,
+    "length": 1,
     "falcorception": {
       "id": "falcorception",
       "url": "/falcorception.json",
@@ -52,216 +47,12 @@
         },
         "length": 3
       }
-    },
-    "N1dJINkie": {
-      "id": "N1dJINkie",
-      "url": "/N1dJINkie",
-      "name": "someName",
-      "created": "2016-01-01T00:00:00Z",
-      "routes": {
-        "length": 4,
-        "VyNDiI2og": {
-          "id": "VyNDiI2og",
-          "name": "Unamed route",
-          "method": "get",
-          "matcher": "a.b.c",
-          "created": "2016-02-28T21:53:07.597Z",
-          "source": {
-            "id": "TestFirebase"
-          },
-          "query": "nope"
-        },
-        "NJ0f_l72g": {
-          "id": "NJ0f_l72g",
-          "name": "Unamed route",
-          "method": "get",
-          "matcher": "fb",
-          "created": "2016-03-04T22:15:26.053Z",
-          "source": {
-            "id": "TestFirebase"
-          },
-          "query": "test"
-        },
-        "EyF0sxmhg": {
-          "id": "EyF0sxmhg",
-          "name": "Unamed route",
-          "method": "get",
-          "matcher": "fbv[{keys:prop}]",
-          "created": "2016-03-04T22:31:20.657Z",
-          "source": {
-            "id": "TestFirebase"
-          },
-          "query": "test/{{prop}}"
-        },
-        "NkyD5YHnx": {
-          "id": "NkyD5YHnx",
-          "name": "Unamed route",
-          "method": "get",
-          "matcher": "trex",
-          "created": "2016-03-06T21:03:58.401Z",
-          "source": {
-            "id": "V1MH5KHnx"
-          },
-          "query": "/"
-        }
-      }
-    },
-    "Nkrh8yMog": {
-      "id": "Nkrh8yMog",
-      "url": "/Nkrh8yMog",
-      "name": "someName",
-      "created": "2016-02-01T00:00:00Z",
-      "routes": {
-        "VJer38yMig": {
-          "id": "VJer38yMig",
-          "name": "someRouteName",
-          "method": "get",
-          "matcher": "thePathOfTheRoute",
-          "created": "2016-02-21T20:44:36.245Z",
-          "source": {
-            "id": "TestFirebase"
-          }
-        },
-        "length": 1
-      }
-    },
-    "VyD38JGje": {
-      "id": "VyD38JGje",
-      "url": "/VyD38JGje",
-      "name": "someName",
-      "created": "2016-01-02T00:00:00Z",
-      "routes": {
-        "4kgwhU1zjg": {
-          "id": "4kgwhU1zjg",
-          "name": "someRouteName",
-          "method": "get",
-          "matcher": "thePathOfTheRoute",
-          "created": "2016-02-21T20:44:36.245Z",
-          "source": {
-            "id": "TestFirebase"
-          }
-        },
-        "length": 1
-      }
-    },
-    "N1V69kMie": {
-      "id": "N1V69kMie",
-      "url": "/N1V69kMie",
-      "name": "someName",
-      "created": "2016-02-20T23:49:55.768Z",
-      "routes": {
-        "length": 3,
-        "E1z0gfXje": {
-          "id": "E1z0gfXje",
-          "name": "someRouteName",
-          "method": "get",
-          "matcher": "thePathOfTheRoute",
-          "created": "2016-02-21T20:44:33.996Z",
-          "source": {
-            "id": "TestFirebase"
-          }
-        },
-        "EJVRezQil": {
-          "id": "EJVRezQil",
-          "name": "someRouteName",
-          "method": "get",
-          "matcher": "thePathOfTheRoute",
-          "created": "2016-02-21T20:44:35.213Z",
-          "source": {
-            "id": "TestFirebase"
-          }
-        },
-        "VyiQIaKjx": {
-          "id": "VyiQIaKjx",
-          "name": "Unamed route",
-          "method": "get",
-          "matcher": "a",
-          "created": "2016-02-26T22:51:54.934Z",
-          "source": {
-            "id": "TestFirebase"
-          },
-          "query": "a"
-        }
-      }
-    },
-    "Ek_Tqyfog": {
-      "id": "Ek_Tqyfog",
-      "url": "/Ek_Tqyfog",
-      "name": "someName",
-      "created": "2016-02-20T23:49:59.154Z",
-      "routes": {
-        "E1euTcJMie": {
-          "id": "E1euTcJMie",
-          "name": "someRouteName",
-          "method": "get",
-          "matcher": "thePathOfTheRoute",
-          "created": "2016-02-21T20:44:36.245Z",
-          "source": {
-            "id": "TestFirebase"
-          }
-        },
-        "length": 1
-      }
-    },
-    "EJbIOC82l": {
-      "id": "EJbIOC82l",
-      "name": "lolApi",
-      "created": "2016-03-07T20:48:48.807Z",
-      "url": "/EJbIOC82l",
-      "routes": {
-        "length": 0
-      }
-    },
-    "4kr2dtthl": {
-      "id": "4kr2dtthl",
-      "name": "lolApi2",
-      "created": "2016-03-09T21:45:56.628Z",
-      "url": "/4kr2dtthl",
-      "routes": {
-        "length": 0
-      }
-    },
-    "EkNR_YKnl": {
-      "id": "EkNR_YKnl",
-      "name": "lolApi2",
-      "created": "2016-03-09T21:46:27.448Z",
-      "url": "/EkNR_YKnl",
-      "routes": {
-        "length": 0
-      }
-    },
-    "4kHKtYY2g": {
-      "id": "4kHKtYY2g",
-      "name": "lolApi2",
-      "created": "2016-03-09T21:49:24.859Z",
-      "url": "/4kHKtYY2g",
-      "routes": {
-        "length": 0
-      }
-    },
-    "4199FFY2x": {
-      "id": "4199FFY2x",
-      "name": "lolApi2",
-      "created": "2016-03-09T21:49:46.024Z",
-      "url": "/4199FFY2x",
-      "routes": {
-        "length": 0
-      }
-    },
-    "VkdiFtK2g": {
-      "id": "VkdiFtK2g",
-      "name": "lolApi2",
-      "created": "2016-03-09T21:49:59.271Z",
-      "url": "/VkdiFtK2g",
-      "routes": {
-        "length": 0
-      }
     }
   },
   "sources": {
     "TestFirebase": {
-      "id": "TestFirebase",
-      "name": "Test Firebase",
+      "id": "boilingfire",
+      "name": "Boiling Fire",
       "kind": "firebase",
       "config": {
         "url": "https://boiling-fire-3739.firebaseio.com/test/falcorception"
@@ -281,7 +72,7 @@
         "url": "https://api.github.com"
       }
     },
-    "length": 3,
+    "length": 4,
     "4kcrNVOhx": {
       "id": "4kcrNVOhx",
       "name": "JSON Example",
