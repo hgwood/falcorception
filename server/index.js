@@ -329,13 +329,19 @@ function firebaseRoute(routeDefinition, sourceConfig) {
 }
 
 function restRoute(routeDefinition, sourceConfig) {
+  const defaultOptions = {baseUrl: sourceConfig.url, json: true}
+  const queryTemplate = _.template(routeDefinition.query)
+  const locationTemplate = _.template(routeDefinition.location)
   return {
     route: routeDefinition.matcher,
-    [routeDefinition.method](pathSet) {
+    [routeDefinition.method](pathSet, args) {
       const firstPath = _.map(pathSet, subpath => _.isArray(subpath) ? subpath[0] : subpath)
-      const renderedQuery = mustache.render(routeDefinition.query, pathSet)
-      return requestPromise({uri: sourceConfig.url + renderedQuery, json: true, headers: {"User-Agent": "hgwood"}}).then(response => {
-        return [{path: firstPath, value: {$type: "atom", value: response}}]
+      const renderedQuery = queryTemplate(_.assign({}, pathSet, {args: _.map(args, arg => JSON.stringify(arg))}))
+      const maybeJsonQuery = tryParseJson(renderedQuery)
+      const requestOptions = _.defaults(maybeJsonQuery.json ? maybeJsonQuery.value : {url: maybeJsonQuery.value}, defaultOptions)
+      return requestPromise(requestOptions).then(response => {
+        const path = routeDefinition.method === "get" ? firstPath : _.toPath(locationTemplate(response))
+        return [{path, value: {$type: "atom", value: response}}]
       })
     }
   }
@@ -350,5 +356,13 @@ function jsonRoute(routeDefinition, sourceConfig) {
       const renderedQuery = mustache.render(routeDefinition.query, pathSet)
       return [{path: firstPath, value: {$type: "atom", value: _.get(model, renderedQuery)}}]
     }
+  }
+}
+
+function tryParseJson(maybeJsonString) {
+  try {
+    return {json: true, value: JSON.parse(maybeJsonString)}
+  } catch (e) {
+    return {json: false, value: maybeJsonString}
   }
 }
