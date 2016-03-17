@@ -340,7 +340,7 @@ function restRoute(routeDefinition, sourceConfig) {
       const maybeJsonQuery = tryParseJson(renderedQuery)
       const requestOptions = _.defaults(maybeJsonQuery.json ? maybeJsonQuery.value : {url: maybeJsonQuery.value}, defaultOptions)
       return requestPromise(requestOptions).then(response => {
-        const path = routeDefinition.method === "get" ? firstPath : _.toPath(locationTemplate(response))
+        const path = routeDefinition.method === "call" ? _.toPath(locationTemplate(response)) : firstPath
         return [{path, value: {$type: "atom", value: response}}]
       })
     }
