@@ -335,15 +335,34 @@ function restRoute(routeDefinition, sourceConfig) {
   return {
     route: routeDefinition.matcher,
     [routeDefinition.method](pathSet, args) {
-      const firstPath = _.map(pathSet, subpath => _.isArray(subpath) ? subpath[0] : subpath)
-      const renderedQuery = queryTemplate(_.assign({}, pathSet, {args: _.map(args, arg => JSON.stringify(arg))}))
-      const maybeJsonQuery = tryParseJson(renderedQuery)
-      const requestOptions = _.defaults(maybeJsonQuery.json ? maybeJsonQuery.value : {url: maybeJsonQuery.value}, defaultOptions)
-      return requestPromise(requestOptions).then(response => {
-        const path = routeDefinition.method === "call" ? _.toPath(locationTemplate(response)) : firstPath
-        return [{path, value: {$type: "atom", value: response}}]
-      })
+      if (routeDefinition.method === "call") {
+        const requestOptions = renderRequestOptions(pathSet, args)
+        return requestPromise(requestOptions).then(response => {
+          const path = _.toPath(locationTemplate(response))
+          const value = {$type: "atom", value: response}
+          return [{path, value}]
+        })
+      } else if (routeDefinition.queryRendering === "once") {
+        return Promise.all([runGet(pathSet)])
+      } else {
+        return Promise.all(_.map(expandPreservingShortcuts(pathSet), path => {
+          return runGet(path)
+        }))
+      }
     }
+  }
+  function runGet(pathOrPathSet) {
+    const requestOptions = renderRequestOptions(pathOrPathSet)
+    return requestPromise(requestOptions).then(response => {
+      const value = {$type: "atom", value: response}
+      return {path: _.toArray(pathOrPathSet), value}
+    })
+  }
+  function renderRequestOptions(path, args) {
+    const renderedQuery = queryTemplate(_.assign({}, path, {args: _.map(args, arg => JSON.stringify(arg))}))
+    const maybeJsonQuery = tryParseJson(renderedQuery)
+    const requestOptions = _.defaults(maybeJsonQuery.json ? maybeJsonQuery.value : {url: maybeJsonQuery.value}, defaultOptions)
+    return requestOptions
   }
 }
 
@@ -365,4 +384,25 @@ function tryParseJson(maybeJsonString) {
   } catch (e) {
     return {json: false, value: maybeJsonString}
   }
+}
+
+function expandPreservingShortcuts(pathSet) {
+  const pathSetWithoutShortcuts = _.toArray(pathSet)
+  const indicesOfShortcuts = _(pathSet)
+    .omit("length")
+    .pickBy(key => isNaN(Number(key)))
+    .mapValues(pathSegments => _.indexOf(pathSetWithoutShortcuts, pathSegments))
+    .value()
+  return _.map(expand(pathSet), path => _.assign(_.mapValues(indicesOfShortcuts, index => path[index]), path, {length: path.length}))
+}
+
+function expand(pathSet) {
+  if (_.isEmpty(pathSet)) return [[]]
+  const head = _.head(pathSet)
+  const headPathSegments = _.isArray(head) ? head : [head]
+  return _.flatMap(headPathSegments, headPathSegment => {
+    return _.map(expand(_.tail(pathSet)), pathSetTail => {
+      return [headPathSegment, ...pathSetTail]
+    })
+  })
 }
