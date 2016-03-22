@@ -10,7 +10,6 @@ const falcorExpress = require("falcor-express")
 const fs = require("fs")
 const path = require("path")
 const Firebase = require("firebase")
-const mustache = require("mustache")
 const requestPromise = require("request-promise")
 
 const app = express()
@@ -301,7 +300,7 @@ function runApi(api) {
 }
 
 function createFalcorRoute(route, source) {
-  return ({firebase: firebaseRoute, rest: restRoute, json: jsonRoute}[source.kind] || fakeRoute)(route, source.config)
+  return ({firebase: firebaseRoute, rest: restRoute}[source.kind] || fakeRoute)(route, source.config)
 }
 
 function fakeRoute(routeDefinition) {
@@ -316,11 +315,12 @@ function fakeRoute(routeDefinition) {
 
 function firebaseRoute(routeDefinition, sourceConfig) {
   const source = new Firebase(sourceConfig.url)
+  const queryTemplate = _.template(routeDefinition.query)
   return {
     route: routeDefinition.matcher,
     [routeDefinition.method](pathSet) {
       const firstPath = _.map(pathSet, subpath => _.isArray(subpath) ? subpath[0] : subpath)
-      const renderedQuery = mustache.render(routeDefinition.query, pathSet)
+      const renderedQuery = queryTemplate(pathSet)
       return source.child(renderedQuery).once("value").then(snapshot => {
         return [{path: firstPath, value: {$type: "atom", value: snapshot.val()}}]
       })
@@ -363,18 +363,6 @@ function restRoute(routeDefinition, sourceConfig) {
     const maybeJsonQuery = tryParseJson(renderedQuery)
     const requestOptions = _.defaults(maybeJsonQuery.json ? maybeJsonQuery.value : {url: maybeJsonQuery.value}, defaultOptions)
     return requestOptions
-  }
-}
-
-function jsonRoute(routeDefinition, sourceConfig) {
-  const model = JSON.parse(sourceConfig.json)
-  return {
-    route: routeDefinition.matcher,
-    [routeDefinition.method](pathSet) {
-      const firstPath = _.map(pathSet, subpath => _.isArray(subpath) ? subpath[0] : subpath)
-      const renderedQuery = mustache.render(routeDefinition.query, pathSet)
-      return [{path: firstPath, value: {$type: "atom", value: _.get(model, renderedQuery)}}]
-    }
   }
 }
 
