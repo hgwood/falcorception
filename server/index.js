@@ -206,14 +206,16 @@ app.use("/falcorception.json", falcorExpress.dataSourceRoute(function () {
             model.sources[source.id] = source
             return model.sources.length += 1
           })
+          const refToNewSource = {
+            $type: "ref",
+            value: ["sources", "by", "id", source.id]
+          }
           return {
-            paths: [["sources", ["lastAdded", "length"]]],
+            paths: [["sources", ["lastAdded", "length"]], ["sources", "by", "creation", newLength]],
             jsonGraph: {
               sources: {
-                lastAdded: {
-                  $type: "ref",
-                  value: ["sources", "by", "id", source.id]
-                },
+                by: {creation: {[newLength]: refToNewSource}},
+                lastAdded: refToNewSource,
                 length: newLength
               },
             },
