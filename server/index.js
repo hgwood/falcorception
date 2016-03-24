@@ -37,7 +37,9 @@ app.use("/falcorception.json", falcorExpress.dataSourceRoute(function () {
           .zipObject(pathSet.indices)
           .mapValues(_.propertyOf(apis))
           .pickBy(_.identity)
-          .map((api, index) => ({path: ["apis", index], value: {$type: "ref", value: ["apisById", api.id]}}))
+          .map((api, index) => ({
+            path: ["apis", index],
+            value: {$type: "ref", value: ["apisById", api.id]}}))
           .value()
       },
     },
@@ -47,7 +49,9 @@ app.use("/falcorception.json", falcorExpress.dataSourceRoute(function () {
         const data = rw()
         return _(pathSet.ids)
           .map(_.propertyOf(data.apisById))
-          .flatMap(api => _.map(pathSet.props, prop => ({path: ["apisById", api.id, prop], value: api[prop]})))
+          .flatMap(api => _.map(pathSet.props, prop => ({
+            path: ["apisById", api.id, prop],
+            value: api[prop]})))
           .value()
       },
       set(updates) {
