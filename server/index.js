@@ -380,10 +380,13 @@ function expandPreservingShortcuts(pathSet) {
   const pathSetWithoutShortcuts = _.toArray(pathSet)
   const indicesOfShortcuts = _(pathSet)
     .omit("length")
-    .pickBy(key => isNaN(Number(key)))
+    .pickBy((value, key) => isNaN(Number(key)))
     .mapValues(pathSegments => _.indexOf(pathSetWithoutShortcuts, pathSegments))
     .value()
-  return _.map(expand(pathSet), path => _.assign(_.mapValues(indicesOfShortcuts, index => path[index]), path, {length: path.length}))
+  return _.map(expand(pathSet), path => {
+    const shortcuts = _.mapValues(indicesOfShortcuts, _.propertyOf(path))
+    return _.assign(shortcuts, path, {length: path.length})
+  })
 }
 
 function expand(pathSet) {
