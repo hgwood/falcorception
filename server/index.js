@@ -220,7 +220,7 @@ app.use("/falcorception.json", falcorExpress.dataSourceRoute(function () {
               sources: {
                 by: {creation: {[newLength]: refToNewSource}},
                 lastAdded: refToNewSource,
-                length: newLength
+                length: newLength,
               },
             },
           }
@@ -231,7 +231,7 @@ app.use("/falcorception.json", falcorExpress.dataSourceRoute(function () {
               sources: {
                 lastAdded: {
                   $type: "error",
-                  value: e.message
+                  value: e.message,
                 },
               },
             },
@@ -288,7 +288,7 @@ function runApi(api) {
     route: "health",
     get() {
       return {path: ["health"], value: "OK"}
-    }
+    },
   }
   const routes = _(api.routes || {})
     .omit("length")
@@ -315,7 +315,7 @@ function fakeRoute(routeDefinition) {
     [routeDefinition.method](pathSet) {
       const firstPath = _.map(pathSet, subpath => _.isArray(subpath) ? subpath[0] : subpath)
       return [{path: firstPath, value: "The API is running this route but the route is not implemented"}]
-    }
+    },
   }
 }
 
@@ -330,7 +330,7 @@ function firebaseRoute(routeDefinition, sourceConfig) {
       return source.child(renderedQuery).once("value").then(snapshot => {
         return [{path: firstPath, value: {$type: "atom", value: snapshot.val()}}]
       })
-    }
+    },
   }
 }
 
@@ -355,7 +355,7 @@ function restRoute(routeDefinition, sourceConfig) {
           return runGet(path)
         }))
       }
-    }
+    },
   }
   function runGet(pathOrPathSet) {
     const requestOptions = renderRequestOptions(pathOrPathSet)
