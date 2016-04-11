@@ -286,7 +286,7 @@ function runApi(api) {
   const data = rw()
   const healthRoute = {
     route: "health",
-    get(pathSet) {
+    get() {
       return {path: ["health"], value: "OK"}
     }
   }
@@ -380,6 +380,14 @@ function tryParseJson(maybeJsonString) {
   }
 }
 
+/**
+ * Same as `expand` but preserves shortcut properties.
+ *
+ * {0: "a", 1: ["b", "c"], 2: "d", ids: ["b", "c"]} -> [
+ *   {0: "a", 1: "b", 2: "d", ids: "b"},
+ *   {0: "a", 1: "c", 2: "d", ids: "c"}
+ * ]
+ */
 function expandPreservingShortcuts(pathSet) {
   const pathSetWithoutShortcuts = _.toArray(pathSet)
   const indicesOfShortcuts = _(pathSet)
@@ -393,6 +401,11 @@ function expandPreservingShortcuts(pathSet) {
   })
 }
 
+/**
+ * Expands a compressed path set into the corresponding set of full paths.
+ *
+ * ["a", ["b", "c"], "d"] -> [["a", "b", "d"], ["a", "c", "d"]]
+ */
 function expand(pathSet) {
   if (_.isEmpty(pathSet)) return [[]]
   const head = _.head(pathSet)
