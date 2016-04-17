@@ -14,13 +14,13 @@
     "express": "^4.13.4",
     "falcor-express": "~0.1.2",
     "falcor-router": "~0.2.12",
-    "firebase": "^2.4.1",
-    "lodash": "^4.3.0",
+    "firebase": "^2.4.2",
+    "lodash": "^4.11.1",
     "request-promise": "^2.0.1",
     "serve-static": "^1.10.2",
-    "shortid": "^2.2.4"
+    "shortid": "^2.2.6"
   },
   "devDependencies": {
-    "eslint": "^2.2.0"
+    "eslint": "^2.8.0"
   }
 }
