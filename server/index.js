@@ -358,8 +358,13 @@ function restRoute(routeDefinition, sourceConfig) {
     },
   }
   function runGet(pathOrPathSet) {
+    runGet.cache = runGet.cache || {}
     const requestOptions = renderRequestOptions(pathOrPathSet)
-    return requestPromise(requestOptions).then(response => {
+    const responsePromise = _.has(runGet.cache, requestOptions.url) ?
+      Promise.resolve(runGet.cache[requestOptions.url]) :
+      requestPromise(requestOptions)
+    return responsePromise.then(response => {
+      runGet.cache[requestOptions.url] = response
       const path = _.toArray(pathOrPathSet)
       const falcorResponse = buildFalcorResponse(path, response)
       const value = {$type: "atom", value: falcorResponse}
