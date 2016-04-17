@@ -360,8 +360,10 @@ function restRoute(routeDefinition, sourceConfig) {
   function runGet(pathOrPathSet) {
     const requestOptions = renderRequestOptions(pathOrPathSet)
     return requestPromise(requestOptions).then(response => {
-      const value = {$type: "atom", value: response}
-      return {path: _.toArray(pathOrPathSet), value}
+      const path = _.toArray(pathOrPathSet)
+      const falcorResponse = buildFalcorResponse(path, response)
+      const value = {$type: "atom", value: falcorResponse}
+      return {path, value}
     })
   }
   function renderRequestOptions(path, args) {
@@ -369,6 +371,11 @@ function restRoute(routeDefinition, sourceConfig) {
     const maybeJsonQuery = tryParseJson(renderedQuery)
     const requestOptions = _.defaults(maybeJsonQuery.json ? maybeJsonQuery.value : {url: maybeJsonQuery.value}, defaultOptions)
     return requestOptions
+  }
+  function buildFalcorResponse(path, restResponse) {
+    const pathToRestResponse = _.takeWhile(path, pathSegment => !_.has(restResponse, pathSegment))
+    const falcorResponse = _.set({}, pathToRestResponse, restResponse)
+    return _.get(falcorResponse, path)
   }
 }
 
