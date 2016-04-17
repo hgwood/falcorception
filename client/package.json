@@ -25,6 +25,7 @@
     "co": "^4.6.0",
     "falcor": "~0.1.16",
     "falcor-http-datasource": "^0.1.3",
+    "ladda": "github:hakimel/Ladda",
     "lodash": "^4.5.0"
   }
 }
