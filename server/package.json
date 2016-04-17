@@ -13,7 +13,7 @@
     "debug": "^2.2.0",
     "express": "^4.13.4",
     "falcor-express": "~0.1.2",
-    "falcor-router": "~0.2.12",
+    "falcor-router": "^0.4.0",
     "firebase": "^2.4.2",
     "lodash": "^4.11.1",
     "request-promise": "^3.0.0",
