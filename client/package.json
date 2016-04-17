@@ -11,21 +11,21 @@
   "author": "Hugo Wood <hx4.5@free.fr>",
   "license": "MIT",
   "devDependencies": {
-    "browser-sync": "^2.11.1",
-    "eslint": "^2.2.0",
+    "browser-sync": "^2.12.3",
+    "eslint": "^2.8.0",
     "mkdirp": "^0.5.1",
-    "npm-run-all": "^1.5.1",
+    "npm-run-all": "^1.7.0",
     "watchify": "^3.7.0"
   },
   "dependencies": {
-    "angular": "^1.5.0",
-    "angular-route": "^1.5.0",
+    "angular": "^1.5.3",
+    "angular-route": "^1.5.3",
     "bootstrap": "^3.3.6",
     "bootswatch": "^3.3.6",
     "co": "^4.6.0",
-    "falcor": "~0.1.16",
+    "falcor": "^0.1.17",
     "falcor-http-datasource": "^0.1.3",
     "ladda": "github:hakimel/Ladda",
-    "lodash": "^4.5.0"
+    "lodash": "^4.11.1"
   }
 }
