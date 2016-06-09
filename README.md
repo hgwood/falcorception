@@ -1,6 +1,13 @@
 # falcorception
 
-Falcorception est une webapp qui permet de créer, modifier, et déployer 
+Falcorception is an experiment to learn and assess
+[Falcor](http://netflix.github.io/falcor/). It is a web application that creates
+and runs Falcor APIs. It is featured in my talk "Kill all the REST with the
+Falcor".
+
+## Falcor intro (in French)
+
+Falcorception est une webapp qui permet de créer, modifier, et déployer
 des API Falcor de manière graphique. Elle est elle-même basée sur une API
 Falcor.
 
@@ -44,12 +51,12 @@ en une seule requête, et sans endpoint spécifique. Là est la magie.
 
 ## Gotchas
 
-- Don't forget to `bodyParser.urlencoded({extended: false})` so that falcor 
-can interpret form data coming from the client, otherwise you get `Request 
+- Don't forget to `bodyParser.urlencoded({extended: false})` so that falcor
+can interpret form data coming from the client, otherwise you get `Request
 not supported` on calls.
 
 - When the falcor client retries multiple times until an error is raised,
 that means the server is returning invalid paths.
 
-- The falcor clients will replace value at paths not returned by the 
+- The falcor clients will replace value at paths not returned by the
 server by atoms.
