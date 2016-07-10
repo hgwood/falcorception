@@ -11,6 +11,7 @@ const fs = require("fs")
 const path = require("path")
 const Firebase = require("firebase")
 const requestPromise = require("request-promise")
+const {MongoClient} = require("mongodb")
 
 const app = express()
 
@@ -27,44 +28,47 @@ app.use("/falcorception.json", falcorExpress.dataSourceRoute(function () {
     {
       route: "apis[{integers:indices}]",
       get(pathSet) {
-        const data = rw()
-        const apis = _(data.apisById)
-          .omit("length")
-          .values()
-          .orderBy("created", "asc")
-          .value()
-        return _(pathSet.indices)
-          .zipObject(pathSet.indices)
-          .mapValues(_.propertyOf(apis))
-          .pickBy(_.identity)
-          .map((api, index) => ({
-            path: ["apis", index],
-            value: {$type: "ref", value: ["apisById", api.id]}}))
-          .value()
+        return rw().then(data => {
+          const apis = _(data.apisById)
+            .omit("length")
+            .values()
+            .orderBy("created", "asc")
+            .value()
+          return _(pathSet.indices)
+            .zipObject(pathSet.indices)
+            .mapValues(_.propertyOf(apis))
+            .pickBy(_.identity)
+            .map((api, index) => ({
+              path: ["apis", index],
+              value: {$type: "ref", value: ["apisById", api.id]}}))
+            .value()
+        })
       },
     },
     {
       route: "apisById[{keys:ids}][{keys:props}]",
       get(pathSet) {
-        const data = rw()
-        return _(pathSet.ids)
-          .map(_.propertyOf(data.apisById))
-          .flatMap(api => _.map(pathSet.props, prop => ({
-            path: ["apisById", api.id, prop],
-            value: api[prop]})))
-          .value()
+        return rw().then(data => {
+          return _(pathSet.ids)
+            .map(_.propertyOf(data.apisById))
+            .flatMap(api => _.map(pathSet.props, prop => ({
+              path: ["apisById", api.id, prop],
+              value: api[prop]})))
+            .value()
+        })
       },
       set(updates) {
         rw(data => {
           return _.merge(data, updates)
-        })
-        return {jsonGraph: updates}
+        }).then(() => ({jsonGraph: updates}))
       }
     },
     {
       route: "['apis', 'apisById'].length",
       get(pathSet) {
-        return [{path: pathSet, value: rw().apisById.length}]
+        return rw().then(data => {
+          return [{path: pathSet, value: data.apisById.length}]
+        })
       },
     },
     {
@@ -80,22 +84,23 @@ app.use("/falcorception.json", falcorExpress.dataSourceRoute(function () {
           source: {id: args[3]},
           query: args[4]
         }
-        const newLength = rw(function (model) {
+        return rw(function (model) {
           model.apisById[apiId].routes[route.id] = route
           return model.apisById[apiId].routes.length += 1
+        }).then(newLength => Promise.all([newLength, rw()]))
+        .then(([newLength, data]) => {
+          const source = data.sources[route.source.id]
+          runApi[apiId].push(createFalcorRoute(route, source))
+          return _(route)
+            .pickBy(_.negate(_.isObjectLike))
+            .map((value, key) => {
+              return {path: ["apisById", apiId, "routes", "byIds", route.id, key], value}
+            })
+            .push({path: ["apisById", apiId, "routes", "length"], value: newLength})
+            .push({path: ["apisById", apiId, "routes", "lastAdded"], value: {$type: "ref", value: ["apisById", apiId, "routes", "byIds", route.id]}})
+            .push({path: ["apisById", apiId, "routes", "mostRecentFirst", newLength - 1], value: {$type: "ref", value: ["apisById", apiId, "routes", "byIds", route.id]}})
+            .value()
         })
-        const data = rw()
-        const source = data.sources[route.source.id]
-        runApi[apiId].push(createFalcorRoute(route, source))
-        return _(route)
-          .pickBy(_.negate(_.isObjectLike))
-          .map((value, key) => {
-            return {path: ["apisById", apiId, "routes", "byIds", route.id, key], value}
-          })
-          .push({path: ["apisById", apiId, "routes", "length"], value: newLength})
-          .push({path: ["apisById", apiId, "routes", "lastAdded"], value: {$type: "ref", value: ["apisById", apiId, "routes", "byIds", route.id]}})
-          .push({path: ["apisById", apiId, "routes", "mostRecentFirst", newLength - 1], value: {$type: "ref", value: ["apisById", apiId, "routes", "byIds", route.id]}})
-          .value()
       },
     },
     {
@@ -106,90 +111,95 @@ app.use("/falcorception.json", falcorExpress.dataSourceRoute(function () {
         const created = new Date().toISOString()
         const url = `/${id}`
         const api = {id, name, created, url, routes: {length: 0}}
-        const newLength = rw(function (model) {
+        return rw(function (model) {
           model.apisById[id] = api
           return model.apisById.length += 1
-        })
-        runApi(api)
-        return {
-          paths: [["apis", ["lastAdded", newLength - 1, "length"]]],
-          jsonGraph: {
-            apis: {
-              lastAdded: {$type: "ref", value: ["apisById", id]},
-              [newLength - 1]: {$type: "ref", value: ["apisById", id]},
-              length: newLength,
+        }).then(newLength => {
+          runApi(api)
+          return {
+            paths: [["apis", ["lastAdded", newLength - 1, "length"]]],
+            jsonGraph: {
+              apis: {
+                lastAdded: {$type: "ref", value: ["apisById", id]},
+                [newLength - 1]: {$type: "ref", value: ["apisById", id]},
+                length: newLength,
+              },
             },
-          },
-        }
+          }
+        })
       },
     },
     {
       route: "apisById[{keys:ids}].routes.mostRecentFirst[{integers:indices}]",
       get(pathSet) {
-        const data = rw()
-        return _(pathSet.ids)
-          .zipObject(pathSet.ids)
-          .mapValues(_.propertyOf(data.apisById))
-          .mapValues("routes")
-          .mapValues(routes => _.orderBy(_.values(_.omit(routes, "length")), ["created"], ["asc"]))
-          .mapValues(routes => _.pick(routes, pathSet.indices))
-          .flatMap((routes, apiId) => {
-            return _.map(routes, (route, index) => {
-              return {path: ["apisById", apiId, "routes", "mostRecentFirst", index], value: {$type: "ref", value: ["apisById", apiId, "routes", "byIds", route.id]}}
+        return rw().then(data => {
+          return _(pathSet.ids)
+            .zipObject(pathSet.ids)
+            .mapValues(_.propertyOf(data.apisById))
+            .mapValues("routes")
+            .mapValues(routes => _.orderBy(_.values(_.omit(routes, "length")), ["created"], ["asc"]))
+            .mapValues(routes => _.pick(routes, pathSet.indices))
+            .flatMap((routes, apiId) => {
+              return _.map(routes, (route, index) => {
+                return {path: ["apisById", apiId, "routes", "mostRecentFirst", index], value: {$type: "ref", value: ["apisById", apiId, "routes", "byIds", route.id]}}
+              })
             })
-          })
-          .value()
+            .value()
+        })
       },
     },
     {
       route: "apisById[{keys:ids}].routes.length",
       get(pathSet) {
-        const data = rw()
-        return _(pathSet.ids)
-          .zipObject(pathSet.ids)
-          .mapValues(_.propertyOf(data.apisById))
-          .mapValues("routes.length")
-          .map((length, apiId) => ({path: ["apisById", apiId, "routes", "length"], value: length}))
-          .value()
+        return rw().then(data => {
+          return _(pathSet.ids)
+            .zipObject(pathSet.ids)
+            .mapValues(_.propertyOf(data.apisById))
+            .mapValues("routes.length")
+            .map((length, apiId) => ({path: ["apisById", apiId, "routes", "length"], value: length}))
+            .value()
+        })
       },
     },
     {
       route: "apisById[{keys:apiIds}].routes.byIds[{keys:routeIds}][{keys:props}]",
       get(pathSet) {
-        const data = rw()
-        return _(pathSet.apiIds)
-          .zipObject(pathSet.apiIds)
-          .mapValues(_.propertyOf(data.apisById))
-          .mapValues("routes")
-          .mapValues(routes => _.pick(routes, pathSet.routeIds))
-          .flatMap((routes, apiId) => {
-            return _.flatMap(routes, (route, routeId) => {
-              return _.map(pathSet.props, prop => {
-                return {path: ["apisById", apiId, "routes", "byIds", routeId, prop], value: route[prop]}
+        return rw().then(data => {
+          return _(pathSet.apiIds)
+            .zipObject(pathSet.apiIds)
+            .mapValues(_.propertyOf(data.apisById))
+            .mapValues("routes")
+            .mapValues(routes => _.pick(routes, pathSet.routeIds))
+            .flatMap((routes, apiId) => {
+              return _.flatMap(routes, (route, routeId) => {
+                return _.map(pathSet.props, prop => {
+                  return {path: ["apisById", apiId, "routes", "byIds", routeId, prop], value: route[prop]}
+                })
               })
             })
-          })
-          .value()
+            .value()
+        })
       },
     },
     {
       route: "apisById[{keys:apiIds}].routes.byIds[{keys:routeIds}].source",
       get(pathSet) {
-        const data = rw()
-        return _(pathSet.apiIds)
-          .zipObject(pathSet.apiIds)
-          .mapValues(_.propertyOf(data.apisById))
-          .mapValues("routes")
-          .mapValues(routes => _.pick(routes, pathSet.routeIds))
-          .flatMap((routes, apiId) => {
-            return _.flatMap(routes, (route, routeId) => {
-              return {
-                path: ["apisById", apiId, "routes", "byIds", routeId, "source"],
-                value: {$type: "ref", value: ["sources", "by", "id", route.source.id]},
-              }
+        return rw().then(data => {
+          return _(pathSet.apiIds)
+            .zipObject(pathSet.apiIds)
+            .mapValues(_.propertyOf(data.apisById))
+            .mapValues("routes")
+            .mapValues(routes => _.pick(routes, pathSet.routeIds))
+            .flatMap((routes, apiId) => {
+              return _.flatMap(routes, (route, routeId) => {
+                return {
+                  path: ["apisById", apiId, "routes", "byIds", routeId, "source"],
+                  value: {$type: "ref", value: ["sources", "by", "id", route.source.id]},
+                }
+              })
             })
-          })
-          .value()
+            .value()
+        })
       },
     },
     {
@@ -206,24 +216,25 @@ app.use("/falcorception.json", falcorExpress.dataSourceRoute(function () {
           if (source.kind === "firebase") {
             new Firebase(source.config.url)
           }
-          const newLength = rw(model => {
+          return rw(model => {
             model.sources[source.id] = source
             return model.sources.length += 1
-          })
-          const refToNewSource = {
-            $type: "ref",
-            value: ["sources", "by", "id", source.id]
-          }
-          return {
-            paths: [["sources", ["lastAdded", "length"]], ["sources", "by", "creation", newLength]],
-            jsonGraph: {
-              sources: {
-                by: {creation: {[newLength]: refToNewSource}},
-                lastAdded: refToNewSource,
-                length: newLength,
+          }).then(newLength => {
+            const refToNewSource = {
+              $type: "ref",
+              value: ["sources", "by", "id", source.id]
+            }
+            return {
+              paths: [["sources", ["lastAdded", "length"]], ["sources", "by", "creation", newLength]],
+              jsonGraph: {
+                sources: {
+                  by: {creation: {[newLength]: refToNewSource}},
+                  lastAdded: refToNewSource,
+                  length: newLength,
+                },
               },
-            },
-          }
+            }
+          })
         } catch (e) {
            return {
             paths: [["sources", ["lastAdded"]]],
@@ -242,26 +253,28 @@ app.use("/falcorception.json", falcorExpress.dataSourceRoute(function () {
     {
       route: "sources.by.creation[{keys:indices}]",
       get(pathSet) {
-        const data = rw()
-        return _(data.sources)
-          .omit("length", "availableKinds")
-          .values()
-          .sortBy("created")
-          .pick(pathSet.indices)
-          .map((source, index) => ({path: ["sources", "by", "creation", index], value: {$type: "ref", value: ["sources", "by", "id", source.id]}}))
-          .value()
+        return rw().then(data => {
+          return _(data.sources)
+            .omit("length", "availableKinds")
+            .values()
+            .sortBy("created")
+            .pick(pathSet.indices)
+            .map((source, index) => ({path: ["sources", "by", "creation", index], value: {$type: "ref", value: ["sources", "by", "id", source.id]}}))
+            .value()
+        })
       },
     },
     {
       route: "sources.by.id[{keys:ids}][{keys:props}]",
       get(pathSet) {
-        const data = rw()
-        return _(data.sources)
-          .pick(pathSet.ids)
-          .flatMap(source => {
-            return _.map(pathSet.props, prop => ({path: ["sources", "by", "id", source.id, prop], value: source[prop]}))
-          })
-          .value()
+        return rw().then(data => {
+          return _(data.sources)
+            .pick(pathSet.ids)
+            .flatMap(source => {
+              return _.map(pathSet.props, prop => ({path: ["sources", "by", "id", source.id, prop], value: source[prop]}))
+            })
+            .value()
+        })
       },
     },
   ])
@@ -269,40 +282,61 @@ app.use("/falcorception.json", falcorExpress.dataSourceRoute(function () {
 
 app.listen(9009)
 
-_(rw().apisById)
-  .omit("length")
-  .values()
-  .each(runApi)
+
+const mongo = MongoClient.connect("mongodb://localhost:27017/falcorception").then(db => {
+  console.log("db connected")
+  return db
+}).catch(err => {
+  throw err
+})
+const closeDb = () => mongo.then(db => {
+  console.log("closing db")
+  db.close()
+})
+process.on("exit", closeDb)
+process.on("SIGINT", closeDb)
+process.on("SIGTERM", closeDb)
 
 function rw(mutator) {
-  const dataPath = path.join(__dirname, "data.json")
-  const data = JSON.parse(fs.readFileSync(dataPath))
-  const result = mutator ? mutator(data) : data
-  fs.writeFileSync(dataPath, JSON.stringify(data, null, 2))
-  return result
+  return mongo.then(db => {
+    return Promise.all([db, db.collection("falcorception").findOne({})])
+  })
+  .then(([db, data]) => {
+    const result = mutator ? mutator(data) : data
+    return Promise.all([db.collection("falcorception").findOneAndReplace({}, data, {upsert: true}), result, data])
+  })
+  .then(([,result]) => result)
 }
 
-function runApi(api) {
-  const data = rw()
-  const healthRoute = {
-    route: "health",
-    get() {
-      return {path: ["health"], value: "OK"}
-    },
-  }
-  const routes = _(api.routes || {})
+rw().then(data => {
+  _(data.apisById)
     .omit("length")
     .values()
-    .map(route => {
-      const source = data.sources[route.source.id]
-      return createFalcorRoute(route, source)
-    })
-    .push(healthRoute)
-    .value()
-  runApi[api.id] = routes
-  app.use(api.url, falcorExpress.dataSourceRoute(function () {
-    return new falcorRouter(routes)
-  }))
+    .each(runApi)
+})
+
+function runApi(api) {
+  return rw().then(data => {
+    const healthRoute = {
+      route: "health",
+      get() {
+        return {path: ["health"], value: "OK"}
+      },
+    }
+    const routes = _(api.routes || {})
+      .omit("length")
+      .values()
+      .map(route => {
+        const source = data.sources[route.source.id]
+        return createFalcorRoute(route, source)
+      })
+      .push(healthRoute)
+      .value()
+    runApi[api.id] = routes
+    app.use(api.url, falcorExpress.dataSourceRoute(function () {
+      return new falcorRouter(routes)
+    }))
+  })
 }
 
 function createFalcorRoute(route, source) {
