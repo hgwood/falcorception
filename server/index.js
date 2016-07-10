@@ -25,26 +25,7 @@ app.use("/falcorception.json", falcorExpress.dataSourceRoute(function () {
       route: "meta.napis",
       get: () => ({path: ["meta", "napis"], value: 2001}),
     },
-    {
-      route: "apis[{integers:indices}]",
-      get(pathSet) {
-        return rw().then(data => {
-          const apis = _(data.apisById)
-            .omit("length")
-            .values()
-            .orderBy("created", "asc")
-            .value()
-          return _(pathSet.indices)
-            .zipObject(pathSet.indices)
-            .mapValues(_.propertyOf(apis))
-            .pickBy(_.identity)
-            .map((api, index) => ({
-              path: ["apis", index],
-              value: {$type: "ref", value: ["apisById", api.id]}}))
-            .value()
-        })
-      },
-    },
+    require("./src/routes/apis-by-creation-date")(apiRepository),
     {
       route: "apisById[{keys:ids}][{keys:props}]",
       get(pathSet) {
@@ -283,7 +264,9 @@ app.use("/falcorception.json", falcorExpress.dataSourceRoute(function () {
 app.listen(9009)
 
 
-const mongo = MongoClient.connect("mongodb://localhost:27017/falcorception").then(db => {
+require("dotenv").config();
+
+const mongo = MongoClient.connect(process.env.MONGODB_ADDON_URI).then(db => {
   console.log("db connected")
   return db
 }).catch(err => {
@@ -296,6 +279,7 @@ const closeDb = () => mongo.then(db => {
 process.on("exit", closeDb)
 process.on("SIGINT", closeDb)
 process.on("SIGTERM", closeDb)
+const apiRepository = mongo.then(db => db.collection("apis"))
 
 function rw(mutator) {
   return mongo.then(db => {

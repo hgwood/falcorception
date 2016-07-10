@@ -38,3 +38,5 @@ node_modules
 
 #build directory
 build
+
+server/.env
