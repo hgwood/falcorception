@@ -26,6 +26,7 @@ build/Release
 # Dependency directory
 node_modules
 !client/src/node_modules
+!server/src/node_modules
 
 # Optional npm cache directory
 .npm

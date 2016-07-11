@@ -25,7 +25,7 @@ app.use("/falcorception.json", falcorExpress.dataSourceRoute(function () {
       route: "meta.napis",
       get: () => ({path: ["meta", "napis"], value: 2001}),
     },
-    require("./src/routes/apis-by-creation-date")(apiRepository),
+    require("./src/node_modules/routes/apis-by-creation-date")(apiRepository),
     {
       route: "apisById[{keys:ids}][{keys:props}]",
       get(pathSet) {
