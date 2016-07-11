@@ -11,7 +11,7 @@ module.exports = apiRepository => ({
       .map(api => api.id)
       .toArray()
     return _(ids)
-      .pickBy((id, index) => index in paths.indices)
+      .pickBy((id, index) => _.includes(paths.indices, index))
       .map((id, index) => ({
         path: ["apis", index],
         value: {$type: "ref", value: ["apisById", id]}
