@@ -26,24 +26,25 @@ app.use("/falcorception.json", falcorExpress.dataSourceRoute(function () {
       get: () => ({path: ["meta", "napis"], value: 2001}),
     },
     require("./src/node_modules/routes/apis-by-creation-date")(apiRepository),
-    {
-      route: "apisById[{keys:ids}][{keys:props}]",
-      get(pathSet) {
-        return rw().then(data => {
-          return _(pathSet.ids)
-            .map(_.propertyOf(data.apisById))
-            .flatMap(api => _.map(pathSet.props, prop => ({
-              path: ["apisById", api.id, prop],
-              value: api[prop]})))
-            .value()
-        })
-      },
-      set(updates) {
-        rw(data => {
-          return _.merge(data, updates)
-        }).then(() => ({jsonGraph: updates}))
-      }
-    },
+    require("./src/node_modules/routes/apis-by-id")(apiRepository),
+    // {
+    //   route: "apisById[{keys:ids}][{keys:props}]",
+    //   get(pathSet) {
+    //     return rw().then(data => {
+    //       return _(pathSet.ids)
+    //         .map(_.propertyOf(data.apisById))
+    //         .flatMap(api => _.map(pathSet.props, prop => ({
+    //           path: ["apisById", api.id, prop],
+    //           value: api[prop]})))
+    //         .value()
+    //     })
+    //   },
+    //   set(updates) {
+    //     rw(data => {
+    //       return _.merge(data, updates)
+    //     }).then(() => ({jsonGraph: updates}))
+    //   }
+    // },
     {
       route: "['apis', 'apisById'].length",
       get(pathSet) {
