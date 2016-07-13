@@ -21,6 +21,7 @@
       "taskName": "test",
       "args": ["test"],
       "isTestCommand": true,
+      "showOutput": "silent",
       "problemMatcher": {
         "owner": "javascript",
         "fileLocation": "absolute",
