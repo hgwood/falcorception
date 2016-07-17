@@ -25,9 +25,10 @@ app.use("/falcorception.json", falcorExpress.dataSourceRoute(function () {
       route: "meta.napis",
       get: () => ({path: ["meta", "napis"], value: 2001}),
     },
-    require("./src/node_modules/routes/apis-by-creation-date")(apiRepository),
-    require("./src/node_modules/routes/apis-by-id")(apiRepository),
-    require("./src/node_modules/routes/apis-count")(apiRepository),
+    require("./src/node_modules/routes/apis/get-by-creation-date")(apiRepository),
+    require("./src/node_modules/routes/apis/get-by-id")(apiRepository),
+    require("./src/node_modules/routes/apis/length")(apiRepository),
+    require("./src/node_modules/routes/apis/push")(apiRepository, runApi),
     {
       route: "apisById[{keys:ids}].routes.create",
       call(pathSet, args) {
@@ -57,32 +58,6 @@ app.use("/falcorception.json", falcorExpress.dataSourceRoute(function () {
             .push({path: ["apisById", apiId, "routes", "lastAdded"], value: {$type: "ref", value: ["apisById", apiId, "routes", "byIds", route.id]}})
             .push({path: ["apisById", apiId, "routes", "mostRecentFirst", newLength - 1], value: {$type: "ref", value: ["apisById", apiId, "routes", "byIds", route.id]}})
             .value()
-        })
-      },
-    },
-    {
-      route: "apis.create",
-      call(callPath, args) {
-        const name = args[0]
-        const id = shortid.generate()
-        const created = new Date().toISOString()
-        const url = `/${id}`
-        const api = {id, name, created, url, routes: {length: 0}}
-        return rw(function (model) {
-          model.apisById[id] = api
-          return model.apisById.length += 1
-        }).then(newLength => {
-          runApi(api)
-          return {
-            paths: [["apis", ["lastAdded", newLength - 1, "length"]]],
-            jsonGraph: {
-              apis: {
-                lastAdded: {$type: "ref", value: ["apisById", id]},
-                [newLength - 1]: {$type: "ref", value: ["apisById", id]},
-                length: newLength,
-              },
-            },
-          }
         })
       },
     },
