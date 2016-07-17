@@ -27,32 +27,7 @@ app.use("/falcorception.json", falcorExpress.dataSourceRoute(function () {
     },
     require("./src/node_modules/routes/apis-by-creation-date")(apiRepository),
     require("./src/node_modules/routes/apis-by-id")(apiRepository),
-    // {
-    //   route: "apisById[{keys:ids}][{keys:props}]",
-    //   get(pathSet) {
-    //     return rw().then(data => {
-    //       return _(pathSet.ids)
-    //         .map(_.propertyOf(data.apisById))
-    //         .flatMap(api => _.map(pathSet.props, prop => ({
-    //           path: ["apisById", api.id, prop],
-    //           value: api[prop]})))
-    //         .value()
-    //     })
-    //   },
-    //   set(updates) {
-    //     rw(data => {
-    //       return _.merge(data, updates)
-    //     }).then(() => ({jsonGraph: updates}))
-    //   }
-    // },
-    {
-      route: "['apis', 'apisById'].length",
-      get(pathSet) {
-        return rw().then(data => {
-          return [{path: pathSet, value: data.apisById.length}]
-        })
-      },
-    },
+    require("./src/node_modules/routes/apis-count")(apiRepository),
     {
       route: "apisById[{keys:ids}].routes.create",
       call(pathSet, args) {
