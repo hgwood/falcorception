@@ -423,7 +423,7 @@ function expandPreservingShortcuts(pathSet) {
   const pathSetWithoutShortcuts = _.toArray(pathSet)
   const indicesOfShortcuts = _(pathSet)
     .omit("length")
-    .pickBy((value, key) => isNaN(Number(key)))
+    .pickBy((value, key) => isNaN(key))
     .mapValues(pathSegments => _.indexOf(pathSetWithoutShortcuts, pathSegments))
     .value()
   return _.map(expand(pathSet), path => {
