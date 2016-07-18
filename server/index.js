@@ -80,7 +80,7 @@ app.use("/falcorception.json", falcorExpress.dataSourceRoute(function () {
         })
       },
     },
-    {
+    { // HAVE TO DO THIS TOO TO MAKE IT WORK
       route: "apisById[{keys:ids}].routes.length",
       get(pathSet) {
         return rw().then(data => {
