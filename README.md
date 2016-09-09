@@ -5,6 +5,8 @@ Falcorception is an experiment to learn and assess
 and runs Falcor APIs. It is featured in my talk "Kill all the REST with the
 Falcor".
 
+Video from Devoxx: https://www.youtube.com/watch?v=woOg4UyNHn8
+
 ## Falcor intro (in French)
 
 Falcorception est une webapp qui permet de créer, modifier, et déployer
