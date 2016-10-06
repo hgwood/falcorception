@@ -6,6 +6,7 @@
   "author": "Hugo Wood <hx4.5@free.fr",
   "license": "MIT",
   "scripts": {
+    "start": "node index",
     "lint": "eslint *.js"
   },
   "dependencies": {
