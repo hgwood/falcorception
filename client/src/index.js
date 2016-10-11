@@ -1,4 +1,3 @@
-require("lodash") // global _
 require("angular") // global angular
 require("angular-route") // load module
 
