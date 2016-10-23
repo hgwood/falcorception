@@ -7,6 +7,10 @@ Falcor".
 
 Video from Devoxx: https://www.youtube.com/watch?v=woOg4UyNHn8
 
+## Getting started
+
+`npm install` and `npm start` in both the `client` and `server` folders.
+
 ## Falcor intro (in French)
 
 Falcorception est une webapp qui permet de créer, modifier, et déployer
